@@ -6,38 +6,42 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/17 18:32:41 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/17 21:58:28 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#define PHILOSOPHERS_H
 
 /* ************************************************************************** */
 /*                               Includes                                     */
 /* ************************************************************************** */
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include <sys/time.h>
-# include <pthread.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/time.h>
+#include <pthread.h>
 
 /* ************************************************************************** */
 /*                               Structure                                    */
 /* ************************************************************************** */
 typedef struct s_philo
 {
-	int		id;
-	int 	status;
-}	t_philo;
+	int id;
+	int status;
+} t_philo;
 
 typedef struct s_dinner
 {
-	int		philo_num;
-	int		dead;
-}	t_dinner;
+	unsigned int	total;
+	unsigned int	dead;
+	unsigned int	eat;
+	unsigned int	sleep;
+	unsigned int	meals;
+	unsigned int 	stop;
+} t_dinner;
 
 /* ************************************************************************** */
 /*                              philosophers                                  */
@@ -48,30 +52,37 @@ typedef struct s_dinner
 /* ************************************************************************** */
 
 /* ************************************************************************** */
-/*                                 utils                                      */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
 /*                                 clean                                      */
 /* ************************************************************************** */
 
 /* ************************************************************************** */
 /*                                 exit                                       */
 /* ************************************************************************** */
+void	error(char *error, t_dinner  *table);
+
+/* ************************************************************************** */
+/*                                 utils                                      */
+/* ************************************************************************** */
+void	put_str_fd(int fd, char *s);
 
 /* ************************************************************************** */
 /*                                Limits                                      */
 /* ************************************************************************** */
-# define STDIN			0
-# define STDOUT			1
-# define STDERR			2
-# define TRUE			1
-# define FALSE			0
+#define STDIN 0
+#define STDOUT 1
+#define STDERR 2
+#define TRUE 1
+#define FALSE 0
 
 /* ************************************************************************** */
-/*                                 Msg.Errors                                 */
+/*                                Messages                                    */
 /* ************************************************************************** */
-# define ERR_ARGS		"Usage: ./philo\n"
-# define ERR_MEM		"Error: Memory alloc failed. Check system resources\n"
+#define DIED "%s died\n"
+#define EATING "%s is eating\n"
+#define THINKING "%s is thinking\n"
+#define SLEEPING "%s is sleeping\n"
+#define TAKE_FORKS "%s has taken a fork\n"
+#define ERR_ARGS "Usage: ./philo philos die eat sleep [meals]\n"
+#define ERR_MEM "Error: Memory alloc failed. Check system resources\n"
 
 #endif

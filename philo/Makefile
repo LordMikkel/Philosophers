@@ -6,7 +6,7 @@
 #    By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 17:55:34 by migarrid          #+#    #+#              #
-#    Updated: 2025/07/17 14:55:24 by migarrid         ###   ########.fr        #
+#    Updated: 2025/07/17 21:38:10 by migarrid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME				= philo
 #                            Compiler and Flags                                #
 # **************************************************************************** #
 CC					= cc
-CFLAGS				= -Wall -Wextra -Werror -g #-fsanitize=address,undefined -O
+CFLAGS				= -g #-Wall -Wextra -Werror -g #-fsanitize=address,undefined -O
 
 # **************************************************************************** #
 #                               Shell Comands                                  #
@@ -44,9 +44,7 @@ DEPS				= $(HEADER) $(MAKEFILE)
 #                      File Paths and Dependencies                             #
 # **************************************************************************** #
 MAKEFILE				= Makefile
-HEADER					= $(INC_DIR)/.h \
-						  $(INC_DIR)/macros.h \
-						  $(INC_DIR)/structs.h
+HEADER					= $(INC_DIR)/philosophers.h
 
 # **************************************************************************** #
 #                                   Colors                                     #
@@ -64,11 +62,12 @@ RESET 				= \033[0m
 BOLD 				= \033[1m
 CLEAR 				= \r\033[K
 
-
 # **************************************************************************** #
 #                               Source File                                    #
 # **************************************************************************** #
-SRCS =
+SRCS =				main.c \
+					error.c \
+					utils.c \
 
 # **************************************************************************** #
 #                              Progress Bars                                   #
@@ -83,15 +82,14 @@ SRC_PCT = $(shell expr 100 \* $(SRC_COUNT) / $(SRC_COUNT_TOT))
 # **************************************************************************** #
 #                               Object File                                    #
 # **************************************************************************** #
-OBJS		= $(SRCS:%.c=$(OBJ_DIR)/%.o)
-
-# Create the directory if it doesn't exist
-${OBJS}: | ${OBJ_DIR}
+# Create directories
 $(OBJ_DIR):
 	@$(MKDIR) $(OBJ_DIR)
 
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+
 # Rule to compile archive .c to ,o with progress bars
-${OBJ_DIR}/%.o: ${SRC_DIR}/%.c $(DEPS)
+${OBJ_DIR}/%.o: ${SRC_DIR}/%.c $(DEPS) | $(OBJ_DIR)
 	@$(eval SRC_COUNT = $(shell expr $(SRC_COUNT) + 1))
 	@$(PRINT) "\r%100s\r[ %d/%d (%d%%) ] Compiling $(BLUE)$<$(DEFAULT)...\n" "" $(SRC_COUNT) $(SRC_COUNT_TOT) $(SRC_PCT)
 	@$(CC) $(CFLAGS) -I. -c -o $@ $<
@@ -114,15 +112,11 @@ norm:
 
 # Clean object files
 clean:
-	@$(MAKE) clean -s -C $(LIBFT_DIR)
-	@$(MAKE) clean -s -C $(LIBX_DIR)
 	@$(RM) $(OBJ_DIR)
 	@$(PRINT) "${CLEAR}${RESET}${GREEN}»${RESET} [${PURPLE}${BOLD}${NAME}${RESET}]: Objects were cleaned ${GREEN}successfully${RESET}.\n${RESET}"
 
 # Full clean
 fclean: clean
-	@$(MAKE) fclean -s -C $(LIBFT_DIR)
-	@$(MAKE) fclean -s -C $(LIBX_DIR)
 	@$(RM) $(NAME)
 	@$(PRINT) "${CLEAR}${RESET}${GREY}────────────────────────────────────────────────────────────────────────────\n${RESET}${GREEN}»${RESET} [${PURPLE}${BOLD}${NAME}${RESET}]: Project cleaned ${GREEN}successfully${RESET}.${GREY}\n${RESET}${GREY}────────────────────────────────────────────────────────────────────────────\n${RESET}"
 
