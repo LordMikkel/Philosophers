@@ -6,7 +6,7 @@
 #    By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 17:55:34 by migarrid          #+#    #+#              #
-#    Updated: 2025/07/17 21:38:10 by migarrid         ###   ########.fr        #
+#    Updated: 2025/07/18 17:26:54 by migarrid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,10 @@ NAME				= philo
 #                            Compiler and Flags                                #
 # **************************************************************************** #
 CC					= cc
-CFLAGS				= -g #-Wall -Wextra -Werror -g #-fsanitize=address,undefined -O
+#WFLAGS				= -Wall -Wextra -Werror
+DFLAGS				= -g
+#SFLAGS				= -fsanitize=address,undefined -O
+TFLAGS				= -pthread
 
 # **************************************************************************** #
 #                               Shell Comands                                  #
@@ -92,7 +95,7 @@ OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 ${OBJ_DIR}/%.o: ${SRC_DIR}/%.c $(DEPS) | $(OBJ_DIR)
 	@$(eval SRC_COUNT = $(shell expr $(SRC_COUNT) + 1))
 	@$(PRINT) "\r%100s\r[ %d/%d (%d%%) ] Compiling $(BLUE)$<$(DEFAULT)...\n" "" $(SRC_COUNT) $(SRC_COUNT_TOT) $(SRC_PCT)
-	@$(CC) $(CFLAGS) -I. -c -o $@ $<
+	@$(CC) $(WFLAGS) $(DFLAGS) $(SFLAGS) $(TFLAGS) -I. -c -o $@ $<
 
 # **************************************************************************** #
 #                              Targets                                         #
