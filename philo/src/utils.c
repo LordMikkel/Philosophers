@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:51:24 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/17 21:31:05 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/22 18:06:06 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,64 @@ void	put_str_fd(int fd, char *s)
 		write(fd, s, 1);
 		s++;
 	}
-	write(fd, "\n", 1);
+}
+
+int	ft_atoi(const char *nptr)
+{
+	int	i;
+	int	sign;
+	int	result;
+
+	if (!nptr)
+		return (0);
+	i = 0;
+	sign = 1;
+	result = 0;
+	while (nptr[i] == ' ' || (nptr[i] >= '\t' && nptr[i] <= '\r'))
+		i++;
+	if (nptr[i] == '+' || nptr[i] == '-')
+	{
+		if (nptr[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (ft_isdigit(nptr[i]))
+		result = (result * 10) + (nptr[i++] - '0');
+	return (result * sign);
+}
+
+bool	ft_atoi_range(const char *nptr)
+{
+	int			i;
+	int			sign;
+	long long	result;
+
+	if (!nptr)
+		return (0);
+	i = 0;
+	sign = 1;
+	result = 0;
+	while (nptr[i] == ' ' || (nptr[i] >= '\t' && nptr[i] <= '\r'))
+		i++;
+	if (nptr[i] == '+' || nptr[i] == '-')
+	{
+		if (nptr[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (ft_isdigit(nptr[i]))
+	{
+		result = (result * 10) + (nptr[i] - '0');
+		if ((sign * result) > INT_MAX || (sign * result) < INT_MIN)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
 }

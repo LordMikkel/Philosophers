@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:07:14 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/17 21:39:07 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/22 18:53:00 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 int	main(int ac, char **av)
 {
-	t_dinner	table;
+	t_dinner	dinner;
 
-	if (ac > 5 || ac < 4)
+	if (!is_valid_args(ac, av))
 		return (error(ERR_ARGS, NULL), EXIT_FAILURE);
-	return (EXIT_FAILURE);
+	dinner = (t_dinner){0};
+	if (!init_dinner(&dinner, ac, av))
+		return(error(ERR_MEM, &dinner), EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
