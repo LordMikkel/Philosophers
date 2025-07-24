@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:53:20 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/24 21:40:09 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/24 22:04:31 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	init_dinner(t_dinner *dinner, int ac, char **av)
 	dinner->stop = 0;
 	dinner->start = get_current_time();
 	if (pthread_mutex_init(&dinner->print_mutex, NO_ATRIBUTE))
-		return (put_str_fd(STDERR, ERR_MUTEX), 0);
+		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
 	if (allocate_philosophers(dinner))
 		return (0);
 	if (init_monitor(&dinner->monitor, dinner))
@@ -57,7 +57,7 @@ int	init_philosopher(t_philo *philo, int id, t_dinner *dinner)
 	philo->starvation = 0;
 	philo->dinner = dinner;
 	if (pthread_mutex_init(&philo->meal_mutex, NO_ATRIBUTE))
-		return (put_str_fd(STDERR, ERR_MUTEX), 0);
+		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
 	return (1);
 }
 

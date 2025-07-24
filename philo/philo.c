@@ -38,14 +38,6 @@ struct s_monitor {
 	t_dinner		*dinner;
 };
 
-unsigned int	get_current_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((unsigned int)((tv.tv_sec * 1000) + (tv.tv_usec / 1000)));
-}
-
 unsigned int	get_timestamp(t_dinner *dinner)
 {
 	return (get_current_time() - dinner->start_time);
@@ -251,99 +243,6 @@ void	*monitor_routine(void *arg)
 	}
 	return (NULL);
 }
-
-void	initialize_forks(t_monitor *monitor)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < monitor->dinner->num_philosophers)
-	{
-		monitor->forks_available[i] = 1;
-		i++;
-	}
-}
-
-t_monitor	*create_monitor(t_dinner *dinner)
-{
-	t_monitor	*monitor;
-
-	monitor = malloc(sizeof(t_monitor));
-	if (!monitor)
-		return (NULL);
-
-	monitor->dinner = dinner;
-
-	if (pthread_mutex_init(&monitor->service_mutex, NULL) != 0)
-	{
-		free(monitor);
-		return (NULL);
-	}
-
-	monitor->forks_available = malloc(sizeof(int) * dinner->num_philosophers);
-	if (!monitor->forks_available)
-	{
-		pthread_mutex_destroy(&monitor->service_mutex);
-		free(monitor);
-		return (NULL);
-	}
-
-	initialize_forks(monitor);
-	return (monitor);
-}
-
-void	setup_philosopher(t_philosopher *philo, int id, t_dinner *dinner)
-{
-	philo->id = id;
-	philo->times_eaten = 0;
-	philo->last_meal_time = 0;
-	philo->dinner = dinner;
-	pthread_mutex_init(&philo->meal_mutex, NULL);
-}
-
-int	create_philosophers(t_dinner *dinner)
-{
-	unsigned int	i;
-
-	dinner->philosophers = malloc(sizeof(t_philosopher) * dinner->num_philosophers);
-
-	if (!dinner->philosophers)
-		return (0);
-
-	i = 0;
-	while (i < dinner->num_philosophers)
-	{
-		setup_philosopher(&dinner->philosophers[i], i + 1, dinner);
-		i++;
-	}
-	return (1);
-}
-
-int	setup_dinner(t_dinner *dinner, int argc, char **argv)
-{
-	dinner->num_philosophers = atoi(argv[1]);
-	dinner->time_to_die = atoi(argv[2]);
-	dinner->time_to_eat = atoi(argv[3]);
-	dinner->time_to_sleep = atoi(argv[4]);
-
-	if (argc == 6)
-		dinner->max_meals = atoi(argv[5]);
-	else
-		dinner->max_meals = -1;
-
-	dinner->simulation_ended = 0;
-	dinner->start_time = get_current_time();
-
-	pthread_mutex_init(&dinner->print_mutex, NULL);
-	pthread_mutex_init(&dinner->end_mutex, NULL);
-
-	if (!create_philosophers(dinner))
-		return (0);
-
-	dinner->monitor = create_monitor(dinner);
-	return (dinner->monitor != NULL);
-}
-
 void	cleanup_dinner(t_dinner *dinner)
 {
 	unsigned int	i;
@@ -370,23 +269,6 @@ void	cleanup_dinner(t_dinner *dinner)
 	pthread_mutex_destroy(&dinner->end_mutex);
 }
 
-int	valid_arguments(int argc, char **argv)
-{
-	int	i;
-
-	if (argc < 5 || argc > 6)
-		return (0);
-
-	i = 1;
-	while (i < argc)
-	{
-		if (atoi(argv[i]) <= 0)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int	start_threads(t_dinner *dinner)
 {
 	unsigned int	i;
@@ -407,20 +289,6 @@ int	start_threads(t_dinner *dinner)
 		return (0);
 
 	return (1);
-}
-
-void	wait_for_threads(t_dinner *dinner)
-{
-	unsigned int	i;
-
-	pthread_join(dinner->monitor->monitor_thread, NULL);
-
-	i = 0;
-	while (i < dinner->num_philosophers)
-	{
-		pthread_join(dinner->philosophers[i].thread, NULL);
-		i++;
-	}
 }
 
 int	main(int argc, char **argv)
