@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/22 19:54:38 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/24 21:45:10 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,30 @@
 /*                               Structure                                    */
 /* ************************************************************************** */
 
-typedef struct s_dinner
+typedef struct s_dinner		t_dinner;
+typedef struct s_monitor	t_monitor;
+typedef struct s_philo		t_philo;
+
+struct s_philo
+{
+	int				id;
+	int				meals;
+	unsigned int	starvation;
+	pthread_mutex_t	meal_mutex;
+	pthread_t		thread;
+	t_dinner		*dinner;
+
+};
+
+struct s_monitor
+{
+	int				*forks_available;
+	pthread_mutex_t	service_mutex;
+	pthread_t		thread;
+	t_dinner		*dinner;
+};
+
+struct s_dinner
 {
 	int				total;
 	int				dead;
@@ -39,31 +62,11 @@ typedef struct s_dinner
 	int				sleep;
 	int				meals;
 	int				stop;
-	uint64_t		start;
+	unsigned int	start;
 	pthread_mutex_t	print_mutex;
 	t_monitor		monitor;
 	t_philo			*philosophers;
-}	t_dinner;
-
-typedef struct s_monitor
-{
-	int				*forks_available;
-	pthread_mutex_t	service_mutex;
-	pthread_t		thread;
-	t_dinner		*dinner;
-}	t_monitor;
-
-typedef struct s_philo
-{
-	int				id;
-	int				meals;
-	uint16_t		starvation;
-	pthread_mutex_t	meal_mutex;
-	pthread_t		thread;
-	t_dinner		*dinner;
-
-}	t_philo;
-
+};
 
 /* ************************************************************************** */
 /*                              philosophers                                  */
@@ -74,10 +77,15 @@ typedef struct s_philo
 /* ************************************************************************** */
 int		is_valid_args(int ac, char **av);
 int		init_dinner(t_dinner *dinner, int ac, char **av);
-int		init_philosophers(t_dinner *dinner);
+int		allocate_philosophers(t_dinner *dinner);
 int		init_philosopher(t_philo *philo, int id, t_dinner *dinner);
 int		init_monitor(t_monitor *monitor, t_dinner *dinner);
 void	init_forks(t_monitor *monitor);
+
+/* ************************************************************************** */
+/*                                 time                                       */
+/* ************************************************************************** */
+unsigned int	get_current_time(void);
 
 /* ************************************************************************** */
 /*                                 clean                                      */
@@ -108,6 +116,7 @@ int		ft_isdigit(int c);
 # define SUCCES 1
 # define FREE 1
 # define TAKEN 0
+# define NO_ATRIBUTE 0
 
 /* ************************************************************************** */
 /*                                Messages                                    */
@@ -121,5 +130,6 @@ int		ft_isdigit(int c);
 # define ERR_INT "Error: Arguments must be positive integers (1-2147483647)\n"
 # define ERR_MEM "Error: Memory alloc failed. Check system resources\n"
 # define ERR_MUTEX "Error: Failed to initialize print mutex\n"
+# define ERR_TIME "Error: Failed to get system time\n"
 
 #endif

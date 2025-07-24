@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:07:14 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/22 18:53:00 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/24 21:44:26 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ int	main(int ac, char **av)
 		return (error(ERR_ARGS, NULL), EXIT_FAILURE);
 	dinner = (t_dinner){0};
 	if (!init_dinner(&dinner, ac, av))
-		return(error(ERR_MEM, &dinner), EXIT_FAILURE);
+		return (error(ERR_MEM, &dinner), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
