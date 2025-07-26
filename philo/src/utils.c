@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:51:24 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/22 18:06:06 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:18:06 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,32 @@ int	ft_isdigit(int c)
 	if (c >= '0' && c <= '9')
 		return (1);
 	return (0);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void		*ptr;
+	size_t		total_size;
+	size_t		i;
+	char		*char_ptr;
+
+	if (nmemb == 0 || size == 0)
+	{
+		ptr = malloc(0);
+		return (ptr);
+	}
+	if (size != 0 && nmemb > SIZE_MAX / size)
+		return (NULL);
+	total_size = (nmemb * size);
+	ptr = malloc(total_size);
+	if (ptr == NULL)
+		return (NULL);
+	char_ptr = (char *)ptr;
+	i = 0;
+	while (i < total_size)
+	{
+		char_ptr[i] = 0;
+		i++;
+	}
+	return (ptr);
 }

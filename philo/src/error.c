@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 18:28:46 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/24 22:39:22 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:14:07 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,14 @@
 
 void	error(char *error, t_dinner *dinner)
 {
-	int	i;
-
-	if (&dinner->monitor)
+	if (error)
+		put_str_fd(STDERR, error);
+	if(!dinner)
+		return ;
+	if (dinner->monitor.forks_available)
 		clean_monitor(&dinner->monitor);
 	if (dinner->philosophers)
 		clean_philosophers(dinner);
-	if (&dinner->print_mutex)
+	if (dinner->mtx)
 		clean_dinner(dinner);
-	if (error)
-		put_str_fd(STDERR, error);
-}
-
-void	clean_monitor(t_monitor *monitor)
-{
-	if (&monitor->service_mutex)
-	{
-		if (pthread_mutex_destroy(&monitor->service_mutex))
-			put_str_fd(STDERR, ERR_MUTEX_DESTROY);
-		if (monitor->forks_available)
-			free(monitor->forks_available);
-	}
-}
-
-void	clean_philosophers(t_dinner *dinner)
-{
-	int	i;
-
-	i = 0;
-	while (i < dinner->total)
-	{
-		if (pthread_mutex_destroy(&dinner->philosophers[i].meal_mutex))
-			put_str_fd(STDERR, ERR_MUTEX_DESTROY);
-		i++;
-	}
-	free(dinner->philosophers);
-}
-
-void	clean_dinner(t_dinner *dinner)
-{
-	if (pthread_mutex_destroy(&dinner->print_mutex))
-		put_str_fd(STDERR, ERR_MUTEX_DESTROY);
 }

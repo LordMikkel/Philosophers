@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/24 22:43:16 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:19:14 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ struct s_philo
 {
 	int				id;
 	int				meals;
+	int				mtx;
+	int				th;
 	unsigned int	starvation;
 	pthread_mutex_t	meal_mutex;
 	pthread_t		thread;
@@ -48,6 +50,8 @@ struct s_philo
 
 struct s_monitor
 {
+	int				mtx;
+	int				th;
 	int				*forks_available;
 	pthread_mutex_t	service_mutex;
 	pthread_t		thread;
@@ -62,6 +66,7 @@ struct s_dinner
 	int				sleep;
 	int				meals;
 	int				stop;
+	int				mtx;
 	unsigned int	start;
 	pthread_mutex_t	print_mutex;
 	t_monitor		monitor;
@@ -90,6 +95,7 @@ unsigned int	get_current_time(void);
 /* ************************************************************************** */
 /*                                 clean                                      */
 /* ************************************************************************** */
+void			clean_all(t_dinner *dinner);
 void			clean_dinner(t_dinner *dinner);
 void			clean_philosophers(t_dinner *dinner);
 void			clean_monitor(t_monitor *monitor);
@@ -105,6 +111,7 @@ void			error(char *error, t_dinner *dinner);
 void			put_str_fd(int fd, char *s);
 int				ft_atoi(const char *nptr);
 bool			ft_atoi_range(const char *nptr);
+void			*ft_calloc(size_t nmemb, size_t size);
 int				ft_isdigit(int c);
 
 /* ************************************************************************** */
@@ -130,11 +137,12 @@ int				ft_isdigit(int c);
 # define THINKING "%s is thinking\n"
 # define SLEEPING "%s is sleeping\n"
 # define TAKE_FORKS "%s has taken a fork\n"
-# define ERR_ARGS "Usage: ./philo philos die(ms) eat(ms) sleep(ms) [meals]\n"
+# define ERR_ARGS "Usage: ./philo philos(n) die(ms) eat(ms) sleep(ms) [meals]\n"
 # define ERR_INT "Error: Arguments must be positive integers (1-2147483647)\n"
 # define ERR_MEM "Error: Memory alloc failed. Check system resources\n"
-# define ERR_MUTEX_INIT "Error: Failed to initialize print mutex\n"
+# define ERR_MUTEX_INIT "Error: Failed to initialize mutex\n"
 # define ERR_MUTEX_DESTROY "Error: Failed to destroy mutex\n"
 # define ERR_TIME "Error: Failed to get system time\n"
+# define ERR_INIT "Error: Initialization process failed\n"
 
 #endif

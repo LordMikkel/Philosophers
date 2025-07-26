@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:53:20 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/24 22:04:31 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:22:55 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ int	init_dinner(t_dinner *dinner, int ac, char **av)
 	dinner->start = get_current_time();
 	if (pthread_mutex_init(&dinner->print_mutex, NO_ATRIBUTE))
 		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
-	if (allocate_philosophers(dinner))
+	dinner->mtx = TRUE;
+	if (!allocate_philosophers(dinner))
 		return (0);
-	if (init_monitor(&dinner->monitor, dinner))
+	if (!init_monitor(&dinner->monitor, dinner))
 		return (0);
 	return (1);
 }
@@ -37,7 +38,7 @@ int	allocate_philosophers(t_dinner *dinner)
 {
 	int	i;
 
-	dinner->philosophers = malloc(sizeof(t_philo) * dinner->total);
+	dinner->philosophers = ft_calloc(dinner->total, sizeof(t_philo));
 	if (!dinner->philosophers)
 		return (put_str_fd(STDERR, ERR_MEM), 0);
 	i = 0;
@@ -58,15 +59,17 @@ int	init_philosopher(t_philo *philo, int id, t_dinner *dinner)
 	philo->dinner = dinner;
 	if (pthread_mutex_init(&philo->meal_mutex, NO_ATRIBUTE))
 		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
+	philo->mtx = TRUE;
 	return (1);
 }
 
 int	init_monitor(t_monitor *monitor, t_dinner *dinner)
 {
 	monitor->dinner = dinner;
-	if (pthread_mutex_init(&monitor->service_mutex, NO_ATRIBUTE))
-		return (0);
-	monitor->forks_available = malloc(sizeof(int) * dinner->total);
+	// if (pthread_mutex_init(&monitor->service_mutex, NO_ATRIBUTE))
+	return (0);
+	monitor->mtx = TRUE;
+	monitor->forks_available = ft_calloc(dinner->total, sizeof(int));
 	if (!monitor->forks_available)
 		return (0);
 	init_forks(monitor);
