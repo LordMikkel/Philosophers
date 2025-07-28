@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:07:14 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/26 16:30:23 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:42:52 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ int	main(int ac, char **av)
 	t_dinner	dinner;
 
 	if (!is_valid_args(ac, av))
-	return (error(ERR_ARGS, NULL), EXIT_FAILURE);
+		return (error(ERR_ARGS, NULL), EXIT_FAILURE);
 	dinner = (t_dinner){0};
 	if (!init_dinner(&dinner, ac, av))
 		return (error(ERR_INIT, &dinner), EXIT_FAILURE);
-	// wait_for_threads(&dinner);
+	if (!start_simulation(&dinner))
+		return (error(ERR_SIM, &dinner), EXIT_FAILURE);
+	wait_for_threads(&dinner);
 	clean_all(&dinner);
 	return (EXIT_SUCCESS);
 }

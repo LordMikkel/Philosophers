@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/26 17:19:14 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/28 22:02:29 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ struct s_philo
 	pthread_mutex_t	meal_mutex;
 	pthread_t		thread;
 	t_dinner		*dinner;
-
 };
 
 struct s_monitor
@@ -76,7 +75,11 @@ struct s_dinner
 /* ************************************************************************** */
 /*                              philosophers                                  */
 /* ************************************************************************** */
+int				start_simulation(t_dinner *dinner);
+void			*philosopher_routine(t_philo *philosopher);
+void			*monitor_routine(t_monitor *monitor);
 void			wait_for_threads(t_dinner *dinner);
+
 /* ************************************************************************** */
 /*                             Initialization                                 */
 /* ************************************************************************** */
@@ -132,11 +135,12 @@ int				ft_isdigit(int c);
 /* ************************************************************************** */
 /*                                Messages                                    */
 /* ************************************************************************** */
-# define DIED "%s died\n"
-# define EATING "%s is eating\n"
-# define THINKING "%s is thinking\n"
-# define SLEEPING "%s is sleeping\n"
-# define TAKE_FORKS "%s has taken a fork\n"
+# define DIED "died\n"
+# define EATING "is eating\n"
+# define THINKING "is thinking\n"
+# define SLEEPING "is sleeping\n"
+# define TAKE_L_FORK "has taken the left fork\n"
+# define TAKE_R_FORK "has taken the rigth fork\n"
 # define ERR_ARGS "Usage: ./philo philos(n) die(ms) eat(ms) sleep(ms) [meals]\n"
 # define ERR_INT "Error: Arguments must be positive integers (1-2147483647)\n"
 # define ERR_MEM "Error: Memory alloc failed. Check system resources\n"
@@ -144,5 +148,7 @@ int				ft_isdigit(int c);
 # define ERR_MUTEX_DESTROY "Error: Failed to destroy mutex\n"
 # define ERR_TIME "Error: Failed to get system time\n"
 # define ERR_INIT "Error: Initialization process failed\n"
+# define ERR_SIM "Error: Simulation failed during execution\n"
+# define ERR_THREAD "Error: Failed to create thread\n"
 
 #endif

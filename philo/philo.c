@@ -38,19 +38,6 @@ struct s_monitor {
 	t_dinner		*dinner;
 };
 
-unsigned int	get_timestamp(t_dinner *dinner)
-{
-	return (get_current_time() - dinner->start_time);
-}
-
-void	safe_print(t_philosopher *philo, char *message)
-{
-	pthread_mutex_lock(&philo->dinner->print_mutex);
-	if (!philo->dinner->simulation_ended)
-		printf("%u %d %s\n", get_timestamp(philo->dinner), philo->id, message);
-	pthread_mutex_unlock(&philo->dinner->print_mutex);
-}
-
 void	announce_death(t_philosopher *philo)
 {
 	pthread_mutex_lock(&philo->dinner->print_mutex);
@@ -242,53 +229,6 @@ void	*monitor_routine(void *arg)
 		usleep(1000);
 	}
 	return (NULL);
-}
-void	cleanup_dinner(t_dinner *dinner)
-{
-	unsigned int	i;
-
-	if (dinner->monitor)
-	{
-		pthread_mutex_destroy(&dinner->monitor->service_mutex);
-		free(dinner->monitor->forks_available);
-		free(dinner->monitor);
-	}
-
-	if (dinner->philosophers)
-	{
-		i = 0;
-		while (i < dinner->num_philosophers)
-		{
-			pthread_mutex_destroy(&dinner->philosophers[i].meal_mutex);
-			i++;
-		}
-		free(dinner->philosophers);
-	}
-
-	pthread_mutex_destroy(&dinner->print_mutex);
-	pthread_mutex_destroy(&dinner->end_mutex);
-}
-
-int	start_threads(t_dinner *dinner)
-{
-	unsigned int	i;
-
-	// Crear threads de filósofos (ahora usando el thread de cada filósofo)
-	i = 0;
-	while (i < dinner->num_philosophers)
-	{
-		if (pthread_create(&dinner->philosophers[i].thread, NULL,
-			philosopher_routine, &dinner->philosophers[i]) != 0)
-			return (0);
-		i++;
-	}
-
-	// Crear thread del monitor
-	if (pthread_create(&dinner->monitor->monitor_thread, NULL,
-		monitor_routine, dinner->monitor) != 0)
-		return (0);
-
-	return (1);
 }
 
 int	main(int argc, char **argv)
