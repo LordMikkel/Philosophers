@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:23:41 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 03:55:52 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 19:39:25 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	clean_all(t_dinner *dinner)
 		clean_monitor(&dinner->monitor);
 	if (dinner->philosophers)
 		clean_philosophers(dinner);
-	if (dinner->mtx)
+	if (dinner->mtx[0] || dinner->mtx[1])
 		clean_dinner(dinner);
 }
 

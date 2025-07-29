@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 20:51:25 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 04:27:14 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:06:57 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,20 @@ int	msleep(int miliseconds)
 	if (usleep(microseconds))
 		return (put_str_fd(STDERR, ERR_SLEEP), FAIL);
 	return (SUCCES);
+}
+
+int	calculate_wait_time(t_philo *philosopher)
+{
+	int	time_since_meal;
+	int	wait_time;
+	unsigned int start_time;
+
+	start_time = philosopher->dinner->start;
+	pthread_mutex_lock(&philosopher->meal_mutex);
+	time_since_meal = get_timestamp(start_time) - philosopher->starvation;
+	pthread_mutex_unlock(&philosopher->meal_mutex);
+	wait_time = 10 - (time_since_meal * 8 / philosopher->dinner->dead);
+	if (wait_time < 1)
+		wait_time = 1;
+	return (wait_time);
 }

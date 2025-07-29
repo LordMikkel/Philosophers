@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:10:32 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 04:10:35 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 19:23:57 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	start_simulation(t_dinner *dinner)
 	int	i;
 
 	i = 0;
+	put_str_fd(STDOUT, DINNER_START);
 	while (i < dinner->total)
 	{
 		if (pthread_create(&dinner->philosophers[i].thread, NO_ATRIBUTE,

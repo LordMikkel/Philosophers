@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:07:17 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 04:41:19 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:08:02 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,77 @@ void	*monitor_routine(void *arg)
 	int			i;
 
 	monitor = (t_monitor *)arg;
-	// while(monitor->dinner->stop)
-	// {
-		// 	// i = 0;
-		// 	// while (i < monitor->dinner->total)
-		// 	// {
-			// 	// }
-			// 	// i++;
-			// }
-	return (NULL);
+	msleep(10);
+	while(!monitor->dinner->stop)
+	{
+		i = 0;
+		while (i < monitor->dinner->total)
+		{
+			if (is_philosopher_dead(&monitor->dinner->philosophers[i]))
+			{
+				death(&monitor->dinner->philosophers[i]);
+				return (DEATH);
+			}
+			i++;
+		}
+		if(all_philosophers_are_satisfied(monitor->dinner))
+		{
+			end_simulation(monitor->dinner);
+			return (SIMULATION_ENDED);
+		}
+		msleep(5);
+	}
+	return (SIMULATION_ENDED);
 }
 
-int	request_for_forks(t_monitor *monitor)
+int	all_philosophers_are_satisfied(t_dinner *dinner)
+{
+	int i;
+
+	if (dinner->meals < 1)
+		return (HUNGRY);
+	i = 0;
+	while(i < dinner->total)
+	{
+		if (!has_eaten_enough(&dinner->philosophers[i]))
+			return (HUNGRY);
+		i++;
+	}
+	return (SATISFYED);
+}
+
+int is_philosopher_dead(t_philo *philosopher)
+{
+	int current_time;
+	int time_since_meal;
+
+	pthread_mutex_lock(&philosopher->meal_mutex);
+	current_time = get_timestamp(philosopher->dinner->start);
+	time_since_meal = current_time - philosopher->starvation;
+	pthread_mutex_unlock(&philosopher->meal_mutex);
+	if (time_since_meal >= philosopher->dinner->dead)
+		return (TRUE);
+	return (FALSE);
+}
+
+void	end_simulation(t_dinner *dinner)
+{
+	pthread_mutex_lock(&dinner->end_mutex);
+	pthread_mutex_lock(&dinner->print_mutex);
+	dinner->stop = TRUE;
+	printf("%u	N/A	%s", get_timestamp(dinner->start), DINNER_SUCCES);
+	put_str_fd(STDIN, DINNER_ENDED);
+	pthread_mutex_unlock(&dinner->print_mutex);
+	pthread_mutex_unlock(&dinner->end_mutex);
+}
+
+int	request_for_forks(t_monitor *monitor, t_philo *philosopher)
 {
 	int	left_fork;
 	int	right_fork;
 
-	left_fork = calculate_fork_id(monitor->dinner->philosophers->id,
-			monitor->dinner->total, 0);
-	right_fork = calculate_fork_id(monitor->dinner->philosophers->id,
-			monitor->dinner->total, 1);
+	left_fork = calculate_fork_id(philosopher->id, monitor->dinner->total, 0);
+	right_fork = calculate_fork_id(philosopher->id, monitor->dinner->total, 1);
 	while (!monitor->dinner->stop)
 	{
 		pthread_mutex_lock(&monitor->service_mutex);
@@ -46,26 +97,12 @@ int	request_for_forks(t_monitor *monitor)
 			monitor->forks_available[right_fork] == FREE)
 		{
 			monitor->forks_available[left_fork] = TAKEN;
-			monitor->forks_available[left_fork] = TAKEN;
+			monitor->forks_available[right_fork] = TAKEN;
 			pthread_mutex_unlock(&monitor->service_mutex);
-			return (1);
+			return (YOU_CAN_EAT);
 		}
 		pthread_mutex_unlock(&monitor->service_mutex);
+		msleep(calculate_wait_time(philosopher));
 	}
-	return (0);
-}
-
-int		calculate_fork_id(int philo_id, int total_philo, int is_right_fork)
-{
-	if (is_right_fork)
-		return(philo_id % total_philo);
-	return ((philo_id - 1) % total_philo);
-}
-
-int	all_philosophers_are_satisfied(t_dinner *dinner)
-{
-}
-
-int is_philosopher_dead(t_philo *philosopher)
-{
+	return (SIMULATION_ENDED);
 }

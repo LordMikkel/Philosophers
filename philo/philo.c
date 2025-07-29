@@ -38,59 +38,6 @@ struct s_monitor {
 	t_dinner		*dinner;
 };
 
-void	announce_death(t_philosopher *philo)
-{
-	pthread_mutex_lock(&philo->dinner->print_mutex);
-	pthread_mutex_lock(&philo->dinner->end_mutex);
-	if (!philo->dinner->simulation_ended)
-	{
-		philo->dinner->simulation_ended = 1;
-		printf("%u %d died\n", get_timestamp(philo->dinner), philo->id);
-	}
-	pthread_mutex_unlock(&philo->dinner->end_mutex);
-	pthread_mutex_unlock(&philo->dinner->print_mutex);
-}
-
-unsigned int	calculate_fork_id(int philosopher_id, int total_philosophers, int is_right)
-{
-	if (is_right)
-		return (philosopher_id % total_philosophers);
-	return ((philosopher_id - 1) % total_philosophers);
-}
-
-int	request_forks(t_monitor *monitor, int philosopher_id)
-{
-	unsigned int	left_fork;
-	unsigned int	right_fork;
-
-	left_fork = calculate_fork_id(philosopher_id, monitor->dinner->num_philosophers, 0);
-	right_fork = calculate_fork_id(philosopher_id, monitor->dinner->num_philosophers, 1);
-
-	pthread_mutex_lock(&monitor->service_mutex);
-	if (monitor->forks_available[left_fork] && monitor->forks_available[right_fork])
-	{
-		monitor->forks_available[left_fork] = 0;
-		monitor->forks_available[right_fork] = 0;
-		pthread_mutex_unlock(&monitor->service_mutex);
-		return (1);
-	}
-	pthread_mutex_unlock(&monitor->service_mutex);
-	return (0);
-}
-
-void	return_forks(t_monitor *monitor, int philosopher_id)
-{
-	unsigned int	left_fork;
-	unsigned int	right_fork;
-
-	left_fork = calculate_fork_id(philosopher_id, monitor->dinner->num_philosophers, 0);
-	right_fork = calculate_fork_id(philosopher_id, monitor->dinner->num_philosophers, 1);
-
-	pthread_mutex_lock(&monitor->service_mutex);
-	monitor->forks_available[left_fork] = 1;
-	monitor->forks_available[right_fork] = 1;
-	pthread_mutex_unlock(&monitor->service_mutex);
-}
 
 int	is_philosopher_dead(t_philosopher *philo)
 {
@@ -103,19 +50,6 @@ int	is_philosopher_dead(t_philosopher *philo)
 	pthread_mutex_unlock(&philo->meal_mutex);
 
 	return (time_since_meal >= philo->dinner->time_to_die);
-}
-
-int	has_eaten_enough(t_philosopher *philo)
-{
-	int	eaten;
-
-	pthread_mutex_lock(&philo->meal_mutex);
-	eaten = philo->times_eaten;
-	pthread_mutex_unlock(&philo->meal_mutex);
-
-	if (philo->dinner->max_meals > 0 && eaten >= philo->dinner->max_meals)
-		return (1);
-	return (0);
 }
 
 int	wait_for_forks(t_philosopher *philo)
@@ -132,6 +66,24 @@ int	wait_for_forks(t_philosopher *philo)
 		}
 	}
 	return (0);
+}
+
+
+int	all_philosophers_satisfied(t_dinner *dinner)
+{
+	unsigned int	i;
+
+	if (dinner->max_meals <= 0)
+		return (0);
+
+	i = 0;
+	while (i < dinner->num_philosophers)
+	{
+		if (!has_eaten_enough(&dinner->philosophers[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 void	*philosopher_routine(void *arg)
@@ -172,23 +124,6 @@ void	*philosopher_routine(void *arg)
 		usleep(philo->dinner->time_to_sleep * 1000);
 	}
 	return (NULL);
-}
-
-int	all_philosophers_satisfied(t_dinner *dinner)
-{
-	unsigned int	i;
-
-	if (dinner->max_meals <= 0)
-		return (0);
-
-	i = 0;
-	while (i < dinner->num_philosophers)
-	{
-		if (!has_eaten_enough(&dinner->philosophers[i]))
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 void	*monitor_routine(void *arg)

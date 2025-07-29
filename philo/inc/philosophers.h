@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 04:38:43 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:07:26 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void			*philosopher_routine(void *arg);
 void			*monitor_routine(void *arg);
 void			one_philosopher(t_philo *philosopher);
 int				wait_for_threads(t_dinner *dinner);
+void			end_simulation(t_dinner *dinner);
 
 
 /* ************************************************************************** */
@@ -95,7 +96,7 @@ void			death(t_philo *philo);
 /*                            status and Service                              */
 /* ************************************************************************** */
 int				has_eaten_enough(t_philo *philosopher);
-int				request_for_forks(t_monitor *monitor);
+int				request_for_forks(t_monitor *monitor, t_philo *philosopher);
 int				calculate_fork_id(int philo_id, int total_philo, int is_right);
 int				all_philosophers_are_satisfied(t_dinner *dinner);
 int 			is_philosopher_dead(t_philo *philosopher);
@@ -116,6 +117,7 @@ void			init_forks(t_monitor *monitor);
 unsigned int	get_current_time(void);
 unsigned int	get_timestamp(unsigned int start_time);
 int				msleep(int miliseconds);
+int				calculate_wait_time(t_philo *philosopher);
 
 /* ************************************************************************** */
 /*                                 clean                                      */
@@ -152,8 +154,14 @@ void			safe_print(t_philo *philo, char *message);
 # define SUCCES 1
 # define FREE 1
 # define TAKEN 0
+# define DEATH 0
+# define ALIVE 1
+# define HUNGRY 0
+# define SATISFYED 1
+# define YOU_CAN_EAT 1
 # define NO_ATRIBUTE 0
 # define NO_RETURN_VALUE 0
+# define SIMULATION_ENDED 0
 
 /* ************************************************************************** */
 /*                                Messages                                    */
@@ -175,5 +183,8 @@ void			safe_print(t_philo *philo, char *message);
 # define ERR_THREAD "Error: Failed to create thread\n"
 # define ERR_WAIT "Error: Failed to wait for threads to finish\n"
 # define ERR_SLEEP "Error: Sleep function interrupted or failed\n"
+# define DINNER_START "The dinner has started\n"
+# define DINNER_SUCCES "All philosophers have eaten enough\n"
+# define DINNER_ENDED "The dinner has ended\n"
 
 #endif

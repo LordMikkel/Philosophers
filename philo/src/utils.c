@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:51:24 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/26 17:18:06 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 20:50:29 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,11 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		i++;
 	}
 	return (ptr);
+}
+
+int		calculate_fork_id(int philo_id, int total_philo, int is_right_fork)
+{
+	if (is_right_fork)
+		return(philo_id % total_philo);
+	return ((philo_id - 1) % total_philo);
 }
