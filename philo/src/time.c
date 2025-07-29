@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 20:51:25 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/28 21:56:51 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 04:27:14 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,20 @@ unsigned int	get_current_time(void)
 	return (seconds_ms + microseconds_ms);
 }
 
-unsigned int	get_timestamp(t_dinner *dinner)
+unsigned int	get_timestamp(unsigned int start_time)
 {
 	unsigned int	timestamp;
 
-	timestamp = get_current_time() - dinner->start;
+	timestamp = get_current_time() - start_time;
 	return (timestamp);
+}
+
+int	msleep(int miliseconds)
+{
+	int microseconds;
+
+	microseconds = miliseconds * 1000;
+	if (usleep(microseconds))
+		return (put_str_fd(STDERR, ERR_SLEEP), FAIL);
+	return (SUCCES);
 }

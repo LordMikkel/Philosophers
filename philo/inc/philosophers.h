@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/28 22:02:29 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 04:38:43 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ struct s_dinner
 	int				sleep;
 	int				meals;
 	int				stop;
-	int				mtx;
+	int				mtx[2];
 	unsigned int	start;
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	end_mutex;
 	t_monitor		monitor;
 	t_philo			*philosophers;
 };
@@ -76,9 +77,28 @@ struct s_dinner
 /*                              philosophers                                  */
 /* ************************************************************************** */
 int				start_simulation(t_dinner *dinner);
-void			*philosopher_routine(t_philo *philosopher);
-void			*monitor_routine(t_monitor *monitor);
-void			wait_for_threads(t_dinner *dinner);
+void			*philosopher_routine(void *arg);
+void			*monitor_routine(void *arg);
+void			one_philosopher(t_philo *philosopher);
+int				wait_for_threads(t_dinner *dinner);
+
+
+/* ************************************************************************** */
+/*                                 Actions                                    */
+/* ************************************************************************** */
+void			thinks(t_philo *philosopher);
+void			eats(t_philo *philosopher);
+void			sleeps(t_philo *philosopher);
+void			death(t_philo *philo);
+
+/* ************************************************************************** */
+/*                            status and Service                              */
+/* ************************************************************************** */
+int				has_eaten_enough(t_philo *philosopher);
+int				request_for_forks(t_monitor *monitor);
+int				calculate_fork_id(int philo_id, int total_philo, int is_right);
+int				all_philosophers_are_satisfied(t_dinner *dinner);
+int 			is_philosopher_dead(t_philo *philosopher);
 
 /* ************************************************************************** */
 /*                             Initialization                                 */
@@ -94,6 +114,8 @@ void			init_forks(t_monitor *monitor);
 /*                                 time                                       */
 /* ************************************************************************** */
 unsigned int	get_current_time(void);
+unsigned int	get_timestamp(unsigned int start_time);
+int				msleep(int miliseconds);
 
 /* ************************************************************************** */
 /*                                 clean                                      */
@@ -116,6 +138,7 @@ int				ft_atoi(const char *nptr);
 bool			ft_atoi_range(const char *nptr);
 void			*ft_calloc(size_t nmemb, size_t size);
 int				ft_isdigit(int c);
+void			safe_print(t_philo *philo, char *message);
 
 /* ************************************************************************** */
 /*                                Limits                                      */
@@ -150,5 +173,7 @@ int				ft_isdigit(int c);
 # define ERR_INIT "Error: Initialization process failed\n"
 # define ERR_SIM "Error: Simulation failed during execution\n"
 # define ERR_THREAD "Error: Failed to create thread\n"
+# define ERR_WAIT "Error: Failed to wait for threads to finish\n"
+# define ERR_SLEEP "Error: Sleep function interrupted or failed\n"
 
 #endif

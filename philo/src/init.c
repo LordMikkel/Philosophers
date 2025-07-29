@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:53:20 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/28 18:11:29 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 03:53:03 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	init_dinner(t_dinner *dinner, int ac, char **av)
 	dinner->start = get_current_time();
 	if (pthread_mutex_init(&dinner->print_mutex, NO_ATRIBUTE))
 		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
-	dinner->mtx = TRUE;
+	dinner->mtx[0] = TRUE;
+	if (pthread_mutex_init(&dinner->end_mutex, NO_ATRIBUTE))
+		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
+	dinner->mtx[1] = TRUE;
 	if (!allocate_philosophers(dinner))
 		return (0);
 	if (!init_monitor(&dinner->monitor, dinner))

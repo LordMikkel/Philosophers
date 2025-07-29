@@ -105,14 +105,6 @@ int	is_philosopher_dead(t_philosopher *philo)
 	return (time_since_meal >= philo->dinner->time_to_die);
 }
 
-void	eat_meal(t_philosopher *philo)
-{
-	pthread_mutex_lock(&philo->meal_mutex);
-	philo->last_meal_time = get_timestamp(philo->dinner);
-	philo->times_eaten++;
-	pthread_mutex_unlock(&philo->meal_mutex);
-}
-
 int	has_eaten_enough(t_philosopher *philo)
 {
 	int	eaten;

@@ -6,7 +6,7 @@
 #    By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 17:55:34 by migarrid          #+#    #+#              #
-#    Updated: 2025/07/26 16:26:48 by migarrid         ###   ########.fr        #
+#    Updated: 2025/07/29 04:35:17 by migarrid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,11 @@ SRCS =				main.c \
 					valid.c \
 					init.c \
 					time.c \
-					simulation.c \
+					threads.c \
+					philos.c \
+					monitor.c \
+					actions.c \
+					print.c \
 					wait.c \
 					clean.c \
 					error.c \

@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:23:41 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/26 17:14:43 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 03:55:52 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	clean_all(t_dinner *dinner)
 		clean_monitor(&dinner->monitor);
 	if (dinner->philosophers)
 		clean_philosophers(dinner);
-	if (dinner->mtx == TRUE)
+	if (dinner->mtx)
 		clean_dinner(dinner);
 }
 
@@ -52,6 +52,14 @@ void	clean_philosophers(t_dinner *dinner)
 
 void	clean_dinner(t_dinner *dinner)
 {
-	if (pthread_mutex_destroy(&dinner->print_mutex))
-		put_str_fd(STDERR, ERR_MUTEX_DESTROY);
+	if (dinner->mtx[0] == TRUE)
+	{
+		if (pthread_mutex_destroy(&dinner->print_mutex))
+			put_str_fd(STDERR, ERR_MUTEX_DESTROY);
+	}
+	if (dinner->mtx[1] == TRUE)
+	{
+		if (pthread_mutex_destroy(&dinner->end_mutex))
+			put_str_fd(STDERR, ERR_MUTEX_DESTROY);
+	}
 }

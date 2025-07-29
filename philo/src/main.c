@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:07:14 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/28 20:42:52 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 02:17:01 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	main(int ac, char **av)
 		return (error(ERR_INIT, &dinner), EXIT_FAILURE);
 	if (!start_simulation(&dinner))
 		return (error(ERR_SIM, &dinner), EXIT_FAILURE);
-	wait_for_threads(&dinner);
+	if (!wait_for_threads(&dinner))
+		return (error(ERR_WAIT, &dinner), EXIT_FAILURE);
 	clean_all(&dinner);
 	return (EXIT_SUCCESS);
 }
