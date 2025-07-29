@@ -6,12 +6,11 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:07:17 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 21:08:02 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:33:12 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
-
 
 void	*monitor_routine(void *arg)
 {
@@ -20,7 +19,7 @@ void	*monitor_routine(void *arg)
 
 	monitor = (t_monitor *)arg;
 	msleep(10);
-	while(!monitor->dinner->stop)
+	while (!monitor->dinner->stop)
 	{
 		i = 0;
 		while (i < monitor->dinner->total)
@@ -32,7 +31,7 @@ void	*monitor_routine(void *arg)
 			}
 			i++;
 		}
-		if(all_philosophers_are_satisfied(monitor->dinner))
+		if (all_philosophers_are_satisfied(monitor->dinner))
 		{
 			end_simulation(monitor->dinner);
 			return (SIMULATION_ENDED);
@@ -44,12 +43,12 @@ void	*monitor_routine(void *arg)
 
 int	all_philosophers_are_satisfied(t_dinner *dinner)
 {
-	int i;
+	int	i;
 
 	if (dinner->meals < 1)
 		return (HUNGRY);
 	i = 0;
-	while(i < dinner->total)
+	while (i < dinner->total)
 	{
 		if (!has_eaten_enough(&dinner->philosophers[i]))
 			return (HUNGRY);
@@ -58,10 +57,10 @@ int	all_philosophers_are_satisfied(t_dinner *dinner)
 	return (SATISFYED);
 }
 
-int is_philosopher_dead(t_philo *philosopher)
+int	is_philosopher_dead(t_philo *philosopher)
 {
-	int current_time;
-	int time_since_meal;
+	int	current_time;
+	int	time_since_meal;
 
 	pthread_mutex_lock(&philosopher->meal_mutex);
 	current_time = get_timestamp(philosopher->dinner->start);
@@ -93,8 +92,8 @@ int	request_for_forks(t_monitor *monitor, t_philo *philosopher)
 	while (!monitor->dinner->stop)
 	{
 		pthread_mutex_lock(&monitor->service_mutex);
-		if (monitor->forks_available[left_fork] == FREE &&
-			monitor->forks_available[right_fork] == FREE)
+		if (monitor->forks_available[left_fork] == FREE
+			&& monitor->forks_available[right_fork] == FREE)
 		{
 			monitor->forks_available[left_fork] = TAKEN;
 			monitor->forks_available[right_fork] = TAKEN;

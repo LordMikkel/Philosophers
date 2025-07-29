@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 20:51:25 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 21:06:57 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:34:19 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ unsigned int	get_timestamp(unsigned int start_time)
 
 int	msleep(int miliseconds)
 {
-	int microseconds;
+	int	microseconds;
 
 	microseconds = miliseconds * 1000;
 	if (usleep(microseconds))
@@ -45,9 +45,9 @@ int	msleep(int miliseconds)
 
 int	calculate_wait_time(t_philo *philosopher)
 {
-	int	time_since_meal;
-	int	wait_time;
-	unsigned int start_time;
+	int				time_since_meal;
+	int				wait_time;
+	unsigned int	start_time;
 
 	start_time = philosopher->dinner->start;
 	pthread_mutex_lock(&philosopher->meal_mutex);

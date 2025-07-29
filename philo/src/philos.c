@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:10:02 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 20:35:44 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:35:04 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*philosopher_routine(void *arg)
 	{
 		thinks(philosopher);
 		if (!request_for_forks(&philosopher->dinner->monitor, philosopher))
-				return (SIMULATION_ENDED);
+			return (SIMULATION_ENDED);
 		eats(philosopher);
 		if (has_eaten_enough(philosopher))
 			break ;
@@ -43,7 +43,7 @@ void	one_philosopher(t_philo *philosopher)
 
 int	has_eaten_enough(t_philo *philosopher)
 {
-	int eaten;
+	int	eaten;
 
 	pthread_mutex_lock(&philosopher->meal_mutex);
 	eaten = philosopher->meals;

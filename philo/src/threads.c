@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:10:32 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 19:23:57 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:33:48 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	start_simulation(t_dinner *dinner)
 		i++;
 	}
 	if (pthread_create(&dinner->monitor.thread, NO_ATRIBUTE,
-		monitor_routine, &dinner->monitor))
+			monitor_routine, &dinner->monitor))
 		return (put_str_fd(STDERR, ERR_THREAD), 0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 21:07:26 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:35:28 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void			one_philosopher(t_philo *philosopher);
 int				wait_for_threads(t_dinner *dinner);
 void			end_simulation(t_dinner *dinner);
 
-
 /* ************************************************************************** */
 /*                                 Actions                                    */
 /* ************************************************************************** */
@@ -99,7 +98,7 @@ int				has_eaten_enough(t_philo *philosopher);
 int				request_for_forks(t_monitor *monitor, t_philo *philosopher);
 int				calculate_fork_id(int philo_id, int total_philo, int is_right);
 int				all_philosophers_are_satisfied(t_dinner *dinner);
-int 			is_philosopher_dead(t_philo *philosopher);
+int				is_philosopher_dead(t_philo *philosopher);
 
 /* ************************************************************************** */
 /*                             Initialization                                 */

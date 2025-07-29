@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:51:24 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 20:50:29 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:36:27 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_atoi(const char *nptr)
 			sign = -1;
 		i++;
 	}
-	while (ft_isdigit(nptr[i]))
+	while (nptr[i] >= '0' && nptr[i] <= '9')
 		result = (result * 10) + (nptr[i++] - '0');
 	return (result * sign);
 }
@@ -66,7 +66,7 @@ bool	ft_atoi_range(const char *nptr)
 			sign = -1;
 		i++;
 	}
-	while (ft_isdigit(nptr[i]))
+	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		result = (result * 10) + (nptr[i] - '0');
 		if ((sign * result) > INT_MAX || (sign * result) < INT_MIN)
@@ -74,13 +74,6 @@ bool	ft_atoi_range(const char *nptr)
 		i++;
 	}
 	return (true);
-}
-
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)
@@ -111,9 +104,9 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	return (ptr);
 }
 
-int		calculate_fork_id(int philo_id, int total_philo, int is_right_fork)
+int	calculate_fork_id(int philo_id, int total_philo, int is_right_fork)
 {
 	if (is_right_fork)
-		return(philo_id % total_philo);
+		return (philo_id % total_philo);
 	return ((philo_id - 1) % total_philo);
 }
