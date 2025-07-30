@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 20:51:25 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 21:34:19 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 23:56:10 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,22 @@ int	calculate_wait_time(t_philo *philosopher)
 	int				time_since_meal;
 	int				wait_time;
 	unsigned int	start_time;
+	int				urgency_factor;
 
 	start_time = philosopher->dinner->start;
 	pthread_mutex_lock(&philosopher->meal_mutex);
 	time_since_meal = get_timestamp(start_time) - philosopher->starvation;
 	pthread_mutex_unlock(&philosopher->meal_mutex);
-	wait_time = 10 - (time_since_meal * 8 / philosopher->dinner->dead);
-	if (wait_time < 1)
+	urgency_factor = (time_since_meal * 100) / philosopher->dinner->dead;
+	if (urgency_factor > 80)
 		wait_time = 1;
+	else if (urgency_factor > 60)
+		wait_time = 2;
+	else if (urgency_factor > 40)
+		wait_time = 5;
+	else if (urgency_factor > 20)
+		wait_time = 8;
+	else
+		wait_time = 10;
 	return (wait_time);
 }

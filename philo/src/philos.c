@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:10:02 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 21:35:04 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/29 23:46:39 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	*philosopher_routine(void *arg)
 		one_philosopher(philosopher);
 		return (DEATH);
 	}
+	if (philosopher->id % 2 == 0)
+		msleep(philosopher->dinner->eat / 2);
 	while (!philosopher->dinner->stop)
 	{
 		thinks(philosopher);
