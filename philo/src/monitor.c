@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:07:17 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/01 15:11:36 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:11:13 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*monitor_routine(void *arg)
 			end_simulation(monitor->dinner);
 			return (SIMULATION_ENDED);
 		}
-		msleep(10);
+		msleep(5);
 	}
 	return (SIMULATION_ENDED);
 }
@@ -77,7 +77,7 @@ void	end_simulation(t_dinner *dinner)
 	pthread_mutex_lock(&dinner->print_mutex);
 	dinner->stop = TRUE;
 	printf("%u	N/A	%s", get_timestamp(dinner->start), DINNER_SUCCES);
-	put_str_fd(STDIN, DINNER_ENDED);
+	put_str_fd(STDOUT, DINNER_ENDED);
 	pthread_mutex_unlock(&dinner->print_mutex);
 	pthread_mutex_unlock(&dinner->end_mutex);
 }

@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:10:02 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/01 15:33:50 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/01 18:31:17 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	*philosopher_routine(void *arg)
 		msleep(philosopher->dinner->eat / 2);
 	while (!safe_read_end(philosopher->dinner))
 	{
-		thinks(philosopher);
 		take_forks(philosopher);
 		eats(philosopher);
 		drop_forks(philosopher);
 		if (has_eaten_enough(philosopher))
 			break ;
 		sleeps(philosopher);
+		thinks(philosopher);
 	}
 	return (SIMULATION_ENDED);
 }

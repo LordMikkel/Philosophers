@@ -6,7 +6,7 @@
 #    By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 17:55:34 by migarrid          #+#    #+#              #
-#    Updated: 2025/08/01 15:26:13 by migarrid         ###   ########.fr        #
+#    Updated: 2025/08/01 19:04:55 by migarrid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ NAME				= philo
 CC					= cc
 WFLAGS				= -Wall -Wextra -Werror
 DFLAGS				= -g
-#SFLAGS				= -fsanitize=thread -O2
+SFLAGS				= -fsanitize=thread -O2
 TFLAGS				= -pthread
 
 # **************************************************************************** #
