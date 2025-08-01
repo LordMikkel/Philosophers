@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:53:20 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 20:28:53 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/31 20:03:25 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,33 +60,17 @@ int	init_philosopher(t_philo *philo, int id, t_dinner *dinner)
 	philo->meals = 0;
 	philo->starvation = 0;
 	philo->dinner = dinner;
+	if (pthread_mutex_init(&philo->fork_mutex, NO_ATRIBUTE))
+		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
+	philo->mtx[0] = TRUE;
 	if (pthread_mutex_init(&philo->meal_mutex, NO_ATRIBUTE))
 		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
-	philo->mtx = TRUE;
+	philo->mtx[1] = TRUE;
 	return (1);
 }
 
 int	init_monitor(t_monitor *monitor, t_dinner *dinner)
 {
 	monitor->dinner = dinner;
-	if (pthread_mutex_init(&monitor->service_mutex, NO_ATRIBUTE))
-		return (0);
-	monitor->mtx = TRUE;
-	monitor->forks_available = ft_calloc(dinner->total, sizeof(int));
-	if (!monitor->forks_available)
-		return (0);
-	init_forks(monitor);
 	return (1);
-}
-
-void	init_forks(t_monitor *monitor)
-{
-	int	i;
-
-	i = 0;
-	while (i < monitor->dinner->total)
-	{
-		monitor->forks_available[i] = FREE;
-		i++;
-	}
 }

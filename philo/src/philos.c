@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:10:02 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 23:46:39 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/01 15:33:50 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	*philosopher_routine(void *arg)
 	}
 	if (philosopher->id % 2 == 0)
 		msleep(philosopher->dinner->eat / 2);
-	while (!philosopher->dinner->stop)
+	while (!safe_read_end(philosopher->dinner))
 	{
 		thinks(philosopher);
-		if (!request_for_forks(&philosopher->dinner->monitor, philosopher))
-			return (SIMULATION_ENDED);
+		take_forks(philosopher);
 		eats(philosopher);
+		drop_forks(philosopher);
 		if (has_eaten_enough(philosopher))
 			break ;
 		sleeps(philosopher);
@@ -39,8 +39,10 @@ void	*philosopher_routine(void *arg)
 
 void	one_philosopher(t_philo *philosopher)
 {
-	safe_print(philosopher, TAKE_L_FORK);
+	pthread_mutex_lock(&philosopher->fork_mutex);
+	safe_print(philosopher, TAKE_FORK);
 	msleep(philosopher->dinner->dead);
+	pthread_mutex_unlock(&philosopher->fork_mutex);
 }
 
 int	has_eaten_enough(t_philo *philosopher)
@@ -53,4 +55,14 @@ int	has_eaten_enough(t_philo *philosopher)
 	if (philosopher->dinner->meals > 0 && eaten >= philosopher->dinner->meals)
 		return (SATISFYED);
 	return (HUNGRY);
+}
+
+int	safe_read_end(t_dinner *dinner)
+{
+	int	end;
+
+	pthread_mutex_lock(&dinner->end_mutex);
+	end = dinner->stop;
+	pthread_mutex_unlock(&dinner->end_mutex);
+	return (end);
 }

@@ -8,3 +8,5 @@
 *.swp
 ./obj
 .editorconfig
+42-philosophers-tester
+philosophers_tester

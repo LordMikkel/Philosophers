@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:07:17 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 21:33:12 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/01 15:11:36 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	*monitor_routine(void *arg)
 	int			i;
 
 	monitor = (t_monitor *)arg;
-	msleep(10);
-	while (!monitor->dinner->stop)
+	msleep(50);
+	while (!safe_read_end(monitor->dinner))
 	{
 		i = 0;
 		while (i < monitor->dinner->total)
@@ -36,7 +36,7 @@ void	*monitor_routine(void *arg)
 			end_simulation(monitor->dinner);
 			return (SIMULATION_ENDED);
 		}
-		msleep(5);
+		msleep(10);
 	}
 	return (SIMULATION_ENDED);
 }
@@ -62,8 +62,8 @@ int	is_philosopher_dead(t_philo *philosopher)
 	int	current_time;
 	int	time_since_meal;
 
-	pthread_mutex_lock(&philosopher->meal_mutex);
 	current_time = get_timestamp(philosopher->dinner->start);
+	pthread_mutex_lock(&philosopher->meal_mutex);
 	time_since_meal = current_time - philosopher->starvation;
 	pthread_mutex_unlock(&philosopher->meal_mutex);
 	if (time_since_meal >= philosopher->dinner->dead)
@@ -80,28 +80,4 @@ void	end_simulation(t_dinner *dinner)
 	put_str_fd(STDIN, DINNER_ENDED);
 	pthread_mutex_unlock(&dinner->print_mutex);
 	pthread_mutex_unlock(&dinner->end_mutex);
-}
-
-int	request_for_forks(t_monitor *monitor, t_philo *philosopher)
-{
-	int	left_fork;
-	int	right_fork;
-
-	left_fork = calculate_fork_id(philosopher->id, monitor->dinner->total, 0);
-	right_fork = calculate_fork_id(philosopher->id, monitor->dinner->total, 1);
-	while (!monitor->dinner->stop)
-	{
-		pthread_mutex_lock(&monitor->service_mutex);
-		if (monitor->forks_available[left_fork] == FREE
-			&& monitor->forks_available[right_fork] == FREE)
-		{
-			monitor->forks_available[left_fork] = TAKEN;
-			monitor->forks_available[right_fork] = TAKEN;
-			pthread_mutex_unlock(&monitor->service_mutex);
-			return (YOU_CAN_EAT);
-		}
-		pthread_mutex_unlock(&monitor->service_mutex);
-		msleep(calculate_wait_time(philosopher));
-	}
-	return (SIMULATION_ENDED);
 }

@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/30 19:13:42 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/07/31 23:35:27 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ struct s_philo
 {
 	int				id;
 	int				meals;
-	int				mtx;
-	int				th;
+	int				mtx[2];
 	unsigned int	starvation;
+	pthread_mutex_t fork_mutex;
 	pthread_mutex_t	meal_mutex;
 	pthread_t		thread;
 	t_dinner		*dinner;
@@ -49,10 +49,6 @@ struct s_philo
 
 struct s_monitor
 {
-	int				mtx;
-	int				th;
-	int				*forks_available;
-	pthread_mutex_t	service_mutex;
 	pthread_t		thread;
 	t_dinner		*dinner;
 };
@@ -81,13 +77,17 @@ void			*philosopher_routine(void *arg);
 void			*monitor_routine(void *arg);
 void			one_philosopher(t_philo *philosopher);
 int				wait_for_threads(t_dinner *dinner);
+int 			safe_read_end(t_dinner *dinner);
+int				safe_read_meals(t_philo *philosopher);
 void			end_simulation(t_dinner *dinner);
 
 /* ************************************************************************** */
 /*                                 Actions                                    */
 /* ************************************************************************** */
 void			thinks(t_philo *philosopher);
+void			take_forks(t_philo *philosopher);
 void			eats(t_philo *philosopher);
+void			drop_forks(t_philo *philosopher);
 void			sleeps(t_philo *philosopher);
 void			death(t_philo *philo);
 
@@ -95,8 +95,6 @@ void			death(t_philo *philo);
 /*                            status and Service                              */
 /* ************************************************************************** */
 int				has_eaten_enough(t_philo *philosopher);
-int				request_for_forks(t_monitor *monitor, t_philo *philosopher);
-int				calculate_fork_id(int philo_id, int total_philo, int is_right);
 int				all_philosophers_are_satisfied(t_dinner *dinner);
 int				is_philosopher_dead(t_philo *philosopher);
 
@@ -108,7 +106,6 @@ int				init_dinner(t_dinner *dinner, int ac, char **av);
 int				allocate_philosophers(t_dinner *dinner);
 int				init_philosopher(t_philo *philo, int id, t_dinner *dinner);
 int				init_monitor(t_monitor *monitor, t_dinner *dinner);
-void			init_forks(t_monitor *monitor);
 
 /* ************************************************************************** */
 /*                                 time                                       */
@@ -171,6 +168,7 @@ void			safe_print(t_philo *philo, char *message);
 # define SLEEPING "is sleeping\n"
 # define TAKE_L_FORK "has taken the left fork\n"
 # define TAKE_R_FORK "has taken the rigth fork\n"
+# define TAKE_FORK "has taken a fork\n"
 # define ERR_ARGS "Usage: ./philo philos(n) die(ms) eat(ms) sleep(ms) [meals]\n"
 # define ERR_INT "Error: Arguments must be positive integers (1-2147483647)\n"
 # define ERR_MEM "Error: Memory alloc failed. Check system resources\n"
