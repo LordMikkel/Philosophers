@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
+/*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/29 04:10:32 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/30 19:15:10 by migarrid         ###   ########.fr       */
+/*   Created: 2025/08/02 18:02:51 by migarrid          #+#    #+#             */
+/*   Updated: 2025/08/02 19:53:48 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,16 @@ int	start_simulation(t_dinner *dinner)
 	put_str_fd(STDOUT, DINNER_START);
 	while (i < dinner->total)
 	{
-		if (pthread_create(&dinner->philosophers[i].thread, NO_ATRIBUTE,
-				philosopher_routine, &dinner->philosophers[i]))
-			return (put_str_fd(STDERR, ERR_THREAD), 0);
+		dinner->philosophers[i].pid = fork();
+		if (dinner->philosophers[i].pid == ERROR)
+			return (put_str_fd(STDERR, ERR_FORK), 0);
+		if (dinner->philosophers[i].pid == 0)
+		{
+			philosopher_routine(&dinner->philosophers[i]);
+			return (0);
+		}
 		i++;
 	}
-	if (pthread_create(&dinner->monitor.thread, NO_ATRIBUTE,
-			monitor_routine, &dinner->monitor))
-		return (put_str_fd(STDERR, ERR_THREAD), 0);
+	monitor_routine(dinner);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:23:41 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 19:39:25 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:19:16 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,31 @@
 
 void	clean_all(t_dinner *dinner)
 {
-	if (dinner->monitor.forks_available)
-		clean_monitor(&dinner->monitor);
-	if (dinner->philosophers)
-		clean_philosophers(dinner);
-	if (dinner->mtx[0] || dinner->mtx[1])
-		clean_dinner(dinner);
+	clean_philosophers(dinner);
+	clean_monitor(&dinner->monitor);
 }
 
 void	clean_monitor(t_monitor *monitor)
 {
-	if (monitor->forks_available)
-		free(monitor->forks_available);
-	if (monitor->mtx == TRUE)
-	{
-		if (pthread_mutex_destroy(&monitor->service_mutex))
-			put_str_fd(STDERR, ERR_MUTEX_DESTROY);
-	}
+	if (monitor->forks)
+		sem_close(monitor->forks);
+	if (monitor->service)
+		sem_close(monitor->service);
+	if (monitor->print)
+		sem_close(monitor->print);
+	if (monitor->end)
+		sem_close(monitor->end);
+	if (monitor->death)
+		sem_close(monitor->death);
+	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_SERVICE);
+	sem_unlink(SEM_DEATH);
+	sem_unlink(SEM_PRINT);
+	sem_unlink(SEM_END);
 }
 
 void	clean_philosophers(t_dinner *dinner)
 {
-	int	i;
-
-	i = 0;
-	while (i < dinner->total)
-	{
-		if (dinner->philosophers[i].mtx == TRUE)
-		{
-			if (pthread_mutex_destroy(&dinner->philosophers[i].meal_mutex))
-				put_str_fd(STDERR, ERR_MUTEX_DESTROY);
-		}
-		i++;
-	}
-	free(dinner->philosophers);
-}
-
-void	clean_dinner(t_dinner *dinner)
-{
-	if (dinner->mtx[0] == TRUE)
-	{
-		if (pthread_mutex_destroy(&dinner->print_mutex))
-			put_str_fd(STDERR, ERR_MUTEX_DESTROY);
-	}
-	if (dinner->mtx[1] == TRUE)
-	{
-		if (pthread_mutex_destroy(&dinner->end_mutex))
-			put_str_fd(STDERR, ERR_MUTEX_DESTROY);
-	}
+	if (dinner->philosophers)
+		free(dinner->philosophers);
 }

@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:53:20 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 20:28:53 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:18:28 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@ int	init_dinner(t_dinner *dinner, int ac, char **av)
 		dinner->meals = FALSE;
 	dinner->stop = 0;
 	dinner->start = get_current_time();
-	if (pthread_mutex_init(&dinner->print_mutex, NO_ATRIBUTE))
-		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
-	dinner->mtx[0] = TRUE;
-	if (pthread_mutex_init(&dinner->end_mutex, NO_ATRIBUTE))
-		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
-	dinner->mtx[1] = TRUE;
 	if (!allocate_philosophers(dinner))
 		return (0);
 	if (!init_monitor(&dinner->monitor, dinner))
@@ -60,33 +54,34 @@ int	init_philosopher(t_philo *philo, int id, t_dinner *dinner)
 	philo->meals = 0;
 	philo->starvation = 0;
 	philo->dinner = dinner;
-	if (pthread_mutex_init(&philo->meal_mutex, NO_ATRIBUTE))
-		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
-	philo->mtx = TRUE;
+	philo->monitor = dinner->monitor;
+	philo->pid = 0;
 	return (1);
 }
 
 int	init_monitor(t_monitor *monitor, t_dinner *dinner)
 {
 	monitor->dinner = dinner;
-	if (pthread_mutex_init(&monitor->service_mutex, NO_ATRIBUTE))
+	monitor->philosophers = dinner->philosophers;
+	monitor->pid = 0;
+	init_semaphore(monitor, dinner->total);
+	if (!monitor->forks || !monitor->service || !monitor->print ||
+		!monitor->end || !monitor->death)
 		return (0);
-	monitor->mtx = TRUE;
-	monitor->forks_available = ft_calloc(dinner->total, sizeof(int));
-	if (!monitor->forks_available)
-		return (0);
-	init_forks(monitor);
+	monitor->init = SUCCES;
 	return (1);
 }
 
-void	init_forks(t_monitor *monitor)
+void	init_semaphore(t_monitor *monitor, int total)
 {
-	int	i;
-
-	i = 0;
-	while (i < monitor->dinner->total)
-	{
-		monitor->forks_available[i] = FREE;
-		i++;
-	}
+	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_SERVICE);
+	sem_unlink(SEM_DEATH);
+	sem_unlink(SEM_PRINT);
+	sem_unlink(SEM_END);
+	monitor->forks = sem_open(SEM_FORKS, O_CREAT | O_EXCL, 0644, total);
+	monitor->service = sem_open();
+	monitor->print = sem_open();
+	monitor->end = sem_open();
+	monitor->death = sem_open();
 }

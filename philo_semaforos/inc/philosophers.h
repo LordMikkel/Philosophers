@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/02 16:35:48 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:14:55 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@
 # include <limits.h>
 # include <stdbool.h>
 # include <sys/time.h>
-# include <pthread.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <semaphore.h>
+# include <fcntl.h>
 
 /* ************************************************************************** */
 /*                               Structure                                    */
@@ -39,19 +42,22 @@ struct s_philo
 {
 	int				id;
 	int				meals;
-	int				mtx;
 	unsigned int	starvation;
-	pthread_mutex_t	meal_mutex;
-	pthread_t		thread;
+	pid_t			pid;
+	t_monitor		monitor;
 	t_dinner		*dinner;
 };
 
 struct s_monitor
 {
-	int				mtx;
-	int				*forks_available;
-	pthread_mutex_t	service_mutex;
-	pthread_t		thread;
+	int				init;
+	sem_t			*forks;
+	sem_t			*service;
+	sem_t			*print;
+	sem_t			*end;
+	sem_t			*death;
+	pid_t			pid;
+	t_philo			*philosophers;
 	t_dinner		*dinner;
 };
 
@@ -63,10 +69,7 @@ struct s_dinner
 	int				sleep;
 	int				meals;
 	int				stop;
-	int				mtx[2];
 	unsigned int	start;
-	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	end_mutex;
 	t_monitor		monitor;
 	t_philo			*philosophers;
 };
@@ -75,8 +78,8 @@ struct s_dinner
 /*                              philosophers                                  */
 /* ************************************************************************** */
 int				start_simulation(t_dinner *dinner);
-void			*philosopher_routine(void *arg);
-void			*monitor_routine(void *arg);
+void			philosopher_routine(void *arg);
+void			monitor_routine(void *arg);
 void			one_philosopher(t_philo *philosopher);
 int				wait_for_threads(t_dinner *dinner);
 int				safe_read_end(t_dinner *dinner);
@@ -141,11 +144,21 @@ int				ft_isdigit(int c);
 void			safe_print(t_philo *philo, char *message);
 
 /* ************************************************************************** */
+/*                           Semaphore Names                                  */
+/* ************************************************************************** */
+# define SEM_FORKS "/forks"
+# define SEM_SERVICE "/service"
+# define SEM_PRINT "/print"
+# define SEM_END "/end"
+# define SEM_DEATH "/death"
+
+/* ************************************************************************** */
 /*                                Limits                                      */
 /* ************************************************************************** */
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+# define ERROR -1
 # define TRUE 1
 # define FALSE 0
 # define FAIL 0
@@ -175,6 +188,7 @@ void			safe_print(t_philo *philo, char *message);
 # define ERR_MEM "Error: Memory alloc failed. Check system resources\n"
 # define ERR_MUTEX_INIT "Error: Failed to initialize mutex\n"
 # define ERR_MUTEX_DESTROY "Error: Failed to destroy mutex\n"
+# define ERR_FORK "Error: Fork process failed\n"
 # define ERR_TIME "Error: Failed to get system time\n"
 # define ERR_INIT "Error: Initialization process failed\n"
 # define ERR_SIM "Error: Simulation failed during execution\n"

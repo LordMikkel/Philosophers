@@ -6,17 +6,14 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:10:02 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/02 16:51:52 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:49:30 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-void	*philosopher_routine(void *arg)
+void	*philosopher_routine(t_philo *philosopher)
 {
-	t_philo	*philosopher;
-
-	philosopher = (t_philo *)arg;
 	if (philosopher->dinner->total == 1)
 	{
 		one_philosopher(philosopher);
@@ -30,7 +27,7 @@ void	*philosopher_routine(void *arg)
 			return (SIMULATION_ENDED);
 		eats(philosopher);
 		if (has_eaten_enough(philosopher))
-			break ;
+			return (SATISFYED);
 		sleeps(philosopher);
 		thinks(philosopher);
 	}
