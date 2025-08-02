@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:53:20 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/02 20:18:28 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:23:38 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	init_monitor(t_monitor *monitor, t_dinner *dinner)
 	if (!monitor->forks || !monitor->service || !monitor->print ||
 		!monitor->end || !monitor->death)
 		return (0);
-	monitor->init = SUCCES;
 	return (1);
 }
 

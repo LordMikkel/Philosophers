@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/02 20:14:55 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:23:32 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ struct s_philo
 
 struct s_monitor
 {
-	int				init;
 	sem_t			*forks;
 	sem_t			*service;
 	sem_t			*print;
