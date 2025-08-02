@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/31 23:35:27 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:34:08 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ struct s_philo
 	int				meals;
 	int				mtx[2];
 	unsigned int	starvation;
-	pthread_mutex_t fork_mutex;
+	pthread_mutex_t	fork_mutex;
 	pthread_mutex_t	meal_mutex;
 	pthread_t		thread;
 	t_dinner		*dinner;
@@ -77,7 +77,7 @@ void			*philosopher_routine(void *arg);
 void			*monitor_routine(void *arg);
 void			one_philosopher(t_philo *philosopher);
 int				wait_for_threads(t_dinner *dinner);
-int 			safe_read_end(t_dinner *dinner);
+int				safe_read_end(t_dinner *dinner);
 int				safe_read_meals(t_philo *philosopher);
 void			end_simulation(t_dinner *dinner);
 

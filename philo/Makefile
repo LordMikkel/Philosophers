@@ -6,7 +6,7 @@
 #    By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 17:55:34 by migarrid          #+#    #+#              #
-#    Updated: 2025/08/01 19:04:55 by migarrid         ###   ########.fr        #
+#    Updated: 2025/08/02 16:50:16 by migarrid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,9 @@ NAME				= philo
 # **************************************************************************** #
 CC					= cc
 WFLAGS				= -Wall -Wextra -Werror
-DFLAGS				= -g
-SFLAGS				= -fsanitize=thread -O2
+#DFLAGS				= -g
+OFLAGS				= -O2 -march=native -flto
+SFLAGS				= -fsanitize=thread
 TFLAGS				= -pthread
 
 # **************************************************************************** #
@@ -105,7 +106,7 @@ OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 ${OBJ_DIR}/%.o: ${SRC_DIR}/%.c $(DEPS) | $(OBJ_DIR)
 	@$(eval SRC_COUNT = $(shell expr $(SRC_COUNT) + 1))
 	@$(PRINT) "\r%100s\r[ %d/%d (%d%%) ] Compiling $(BLUE)$<$(DEFAULT)...\n" "" $(SRC_COUNT) $(SRC_COUNT_TOT) $(SRC_PCT)
-	@$(CC) $(WFLAGS) $(DFLAGS) $(SFLAGS) $(TFLAGS) -I. -c -o $@ $<
+	@$(CC) $(WFLAGS) $(DFLAGS) $(SFLAGS) $(OFLAGS) $(TFLAGS) -I. -c -o $@ $<
 
 # **************************************************************************** #
 #                              Targets                                         #
@@ -115,7 +116,7 @@ all: $(LIBFT_A) $(NAME)
 
 # Build executable
 $(NAME): $(OBJS)
-	@$(CC) $(WFLAGS) $(DFLAGS) $(SFLAGS) $(TFLAGS) $(OBJS) -I$(INC_DIR) -o $(NAME)
+	@$(CC) $(WFLAGS) $(DFLAGS) $(SFLAGS) $(OFLAGS) $(TFLAGS) $(OBJS) -I$(INC_DIR) -o $(NAME)
 	@$(PRINT) "${CLEAR}${RESET}${GREY}────────────────────────────────────────────────────────────────────────────\n${RESET}${GREEN}»${RESET} [${PURPLE}${BOLD}${NAME}${RESET}]: ${RED}${BOLD}${NAME} ${RESET}compiled ${GREEN}successfully${RESET}.${GREY}\n${RESET}${GREY}────────────────────────────────────────────────────────────────────────────\n${RESET}"
 
 # Test the norminette in my .c files

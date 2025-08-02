@@ -6,15 +6,15 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 03:34:48 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/01 19:07:56 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:32:12 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-void take_forks(t_philo *philosopher)
+void	take_forks(t_philo *philosopher)
 {
-	t_philo *left_neighbor;
+	t_philo	*left_neighbor;
 	int		total;
 
 	total = philosopher->dinner->total;
@@ -49,9 +49,9 @@ void	eats(t_philo *philo)
 	msleep(philo->dinner->eat);
 }
 
-void	drop_forks(t_philo  *philosopher)
+void	drop_forks(t_philo *philosopher)
 {
-	t_philo *left_neighbor;
+	t_philo	*left_neighbor;
 	int		total;
 
 	total = philosopher->dinner->total;
