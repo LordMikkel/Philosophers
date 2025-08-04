@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:53:20 by migarrid          #+#    #+#             */
-/*   Updated: 2025/07/29 20:28:53 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/03 17:54:41 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ int	init_dinner(t_dinner *dinner, int ac, char **av)
 		dinner->meals = FALSE;
 	dinner->stop = 0;
 	dinner->start = get_current_time();
+	if (dinner->total > 200)
+		return (put_str_fd(STDERR, ERR_TOTAL), 0);
+	if (dinner->dead < 60 || dinner->eat < 60 || dinner->sleep < 60)
+		return (put_str_fd(STDERR, ERR_MS), 0);
 	if (pthread_mutex_init(&dinner->print_mutex, NO_ATRIBUTE))
 		return (put_str_fd(STDERR, ERR_MUTEX_INIT), 0);
 	dinner->mtx[0] = TRUE;

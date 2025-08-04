@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   processes.c                                        :+:      :+:    :+:   */
+/*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/02 18:02:51 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/02 19:53:48 by migarrid         ###   ########.fr       */
+/*   Created: 2025/08/03 18:19:28 by migarrid          #+#    #+#             */
+/*   Updated: 2025/08/04 16:58:12 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@ int	start_simulation(t_dinner *dinner)
 		if (dinner->philosophers[i].pid == 0)
 		{
 			philosopher_routine(&dinner->philosophers[i]);
-			return (0);
+			exit (EXIT_SUCCESS);
 		}
 		i++;
 	}
-	monitor_routine(dinner);
 	return (1);
 }

@@ -6,28 +6,32 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:10:02 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/02 19:49:30 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:08:16 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../inc/philosophers.h"
 
-void	*philosopher_routine(t_philo *philosopher)
+int	philosopher_routine(t_philo *philosopher)
 {
+	pthread_create(&philosopher->monitor->threads[philosopher->id - 1], NO_ATRIBUTE,
+		monitor_routine, philosopher);
+	pthread_detach(philosopher->monitor->threads[philosopher->id - 1]);
 	if (philosopher->dinner->total == 1)
 	{
 		one_philosopher(philosopher);
-		return (DEATH);
+		exit(RIP);
 	}
 	if (philosopher->id % 2 == 0)
 		msleep(philosopher->dinner->eat / 2);
 	while (!safe_read_end(philosopher->dinner))
 	{
-		if (!request_for_forks(&philosopher->dinner->monitor, philosopher))
-			return (SIMULATION_ENDED);
+		take_forks(philosopher);
 		eats(philosopher);
+		drop_forks(philosopher);
 		if (has_eaten_enough(philosopher))
-			return (SATISFYED);
+			exit(FINISH);
 		sleeps(philosopher);
 		thinks(philosopher);
 	}
@@ -36,18 +40,24 @@ void	*philosopher_routine(t_philo *philosopher)
 
 void	one_philosopher(t_philo *philosopher)
 {
-	safe_print(philosopher, TAKE_L_FORK);
+	sem_wait(philosopher->monitor->forks);
+	safe_print(philosopher, TAKE_FORK);
 	msleep(philosopher->dinner->dead);
+	sem_post(philosopher->monitor->forks);
 }
 
 int	has_eaten_enough(t_philo *philosopher)
 {
 	int	eaten;
+	int meals;
 
-	pthread_mutex_lock(&philosopher->meal_mutex);
+	meals = philosopher->dinner->meals;
+	if (meals < 1)
+		return (HUNGRY);
+	sem_wait(philosopher->monitor->meals);
 	eaten = philosopher->meals;
-	pthread_mutex_unlock(&philosopher->meal_mutex);
-	if (philosopher->dinner->meals > 0 && eaten >= philosopher->dinner->meals)
+	sem_post(philosopher->monitor->meals);
+	if (eaten >= meals)
 		return (SATISFYED);
 	return (HUNGRY);
 }
@@ -56,8 +66,9 @@ int	safe_read_end(t_dinner *dinner)
 {
 	int	end;
 
-	pthread_mutex_lock(&dinner->end_mutex);
+	sem_wait(dinner->monitor.end);
 	end = dinner->stop;
-	pthread_mutex_unlock(&dinner->end_mutex);
+	sem_post(dinner->monitor.end);
 	return (end);
 }
+
