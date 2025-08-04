@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/03 01:03:08 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:16:31 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void			safe_print(t_philo *philo, char *message);
 # define ERR_THREAD "Error: Failed to create thread\n"
 # define ERR_WAIT "Error: Failed to wait for threads to finish\n"
 # define ERR_SLEEP "Error: Sleep function interrupted or failed\n"
-# define ERR_MS "Error: Times under 60 ms for die, eat and sleep are not allowed\n"
+# define ERR_MS "Error: Times under 60 ms to die, eat or sleep aren't allowed\n"
 # define ERR_TOTAL "Error: The dinner can not host more than 200 philosophers\n"
 # define DINNER_START "The dinner has started\n"
 # define DINNER_SUCCES "All philosophers have eaten enough\n"

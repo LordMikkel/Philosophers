@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:06:59 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/04 17:49:59 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:17:34 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void			clean_all(t_dinner *dinner);
 void			clean_philosophers(t_dinner *dinner);
 void			clean_monitor(t_monitor *monitor);
 void			unlink_semaphores(void);
-void			kill_all_philosophers(t_dinner  *dinner);
+void			kill_all_philosophers(t_dinner *dinner);
 void			wait_all_philosophers(t_dinner *dinner);
 
 /* ************************************************************************** */
@@ -197,7 +197,7 @@ void			safe_print(t_philo *philo, char *message);
 # define ERR_THREAD "Error: Failed to create thread\n"
 # define ERR_WAIT "Error: Failed to wait for processes to finish\n"
 # define ERR_SLEEP "Error: Sleep function interrupted or failed\n"
-# define ERR_MS "Error: Times under 60 ms for die, eat and sleep are not allowed\n"
+# define ERR_MS "Error: Times under 60 ms to die, eat or sleep aren't allowed\n"
 # define ERR_TOTAL "Error: The dinner can not host more than 200 philosophers\n"
 # define ERR_SEM_INIT "Error: Initialization semaphorer process failed\n"
 # define DINNER_START "The dinner has started\n"

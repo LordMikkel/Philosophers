@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:48:55 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/04 18:47:33 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:18:15 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,10 @@
 int	wait_for_simulation(t_dinner *dinner)
 {
 	int	i;
-	int status;
-	int satisfied;
+	int	status;
+	int	satisfied;
 
 	satisfied = 0;
-    // if (dinner->meals)
-    // {
-	// 	i = 0;
-    //     while (i < dinner->total)
-    //     {
-    //         sem_wait(dinner->monitor.meals);
-    //         i++;
-    //     }
-    //     end_simulation(dinner);
-    //     return (SUCCES);
-    // }
 	while (satisfied < dinner->total)
 	{
 		i = 0;

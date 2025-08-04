@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:07:17 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/04 18:53:14 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:18:29 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	is_philosopher_dead(t_philo *philosopher)
 	return (FALSE);
 }
 
-void	kill_all_philosophers(t_dinner  *dinner)
+void	kill_all_philosophers(t_dinner *dinner)
 {
 	int	i;
 

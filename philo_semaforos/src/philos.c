@@ -6,16 +6,15 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 04:10:02 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/04 19:08:16 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:19:23 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../inc/philosophers.h"
 
 int	philosopher_routine(t_philo *philosopher)
 {
-	pthread_create(&philosopher->monitor->threads[philosopher->id - 1], NO_ATRIBUTE,
+	pthread_create(&philosopher->monitor->threads[philosopher->id - 1], NULL,
 		monitor_routine, philosopher);
 	pthread_detach(philosopher->monitor->threads[philosopher->id - 1]);
 	if (philosopher->dinner->total == 1)
@@ -49,7 +48,7 @@ void	one_philosopher(t_philo *philosopher)
 int	has_eaten_enough(t_philo *philosopher)
 {
 	int	eaten;
-	int meals;
+	int	meals;
 
 	meals = philosopher->dinner->meals;
 	if (meals < 1)
@@ -71,4 +70,3 @@ int	safe_read_end(t_dinner *dinner)
 	sem_post(dinner->monitor.end);
 	return (end);
 }
-
