@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 03:34:48 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/01 15:03:48 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:52:37 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	death(t_philo *philo)
 	pthread_mutex_lock(&philo->dinner->end_mutex);
 	philo->dinner->stop = TRUE;
 	printf("%u	%d	%s", get_timestamp(philo->dinner->start), philo->id, DIED);
+	msleep(50);
 	put_str_fd(STDOUT, DINNER_ENDED);
 	pthread_mutex_unlock(&philo->dinner->end_mutex);
 	pthread_mutex_unlock(&philo->dinner->print_mutex);
