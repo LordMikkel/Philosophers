@@ -6,7 +6,7 @@
 /*   By: migarrid <migarrid@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:23:41 by migarrid          #+#    #+#             */
-/*   Updated: 2025/08/04 19:17:47 by migarrid         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:02:00 by migarrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	clean_monitor(t_monitor *monitor)
 	if (monitor->print != SEM_FAILED)
 		sem_close(monitor->print);
 	if (monitor->meals != SEM_FAILED)
-		sem_close(monitor->death);
+		sem_close(monitor->meals);
 	if (monitor->death != SEM_FAILED)
 		sem_close(monitor->death);
 	if (monitor->end != SEM_FAILED)
