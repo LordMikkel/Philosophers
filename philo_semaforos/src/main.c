@@ -17,7 +17,7 @@ int	main(int ac, char **av)
 	t_dinner	dinner;
 
 	if (!is_valid_args(ac, av))
-		return (error(ERR_ARGS, NULL), EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	dinner = (t_dinner){0};
 	if (!init_dinner(&dinner, ac, av))
 		return (error(ERR_INIT, &dinner), EXIT_FAILURE);
