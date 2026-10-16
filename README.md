@@ -10,9 +10,6 @@
   </a>
 </p>
 
-<p align="center">
-  <img src=".img/score.png" alt="Score" />
-</p>
 
 ## 📖 Description
 
@@ -21,7 +18,7 @@ Philosophers is my solution to the Dining Philosophers problem, written in C. I 
 > **In simple terms:** a few philosophers sit at a round table with a bowl of spaghetti. There is one fork between each pair of them, and you need two forks to eat. They eat, sleep and think in a loop, and if one of them goes too long without eating, they die. The program has to organize the dinner so nobody starves.
 
 <p align="center">
-  <img src=".img/table.svg" alt="Philosophers around a table" />
+  <img src=".img/score.png" alt="Score" />
 </p>
 
 Each philosopher is a thread (a process in the bonus), and each fork can only be held by one philosopher at a time.
