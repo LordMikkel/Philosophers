@@ -6,7 +6,8 @@
 *.a
 *.py
 *.swp
-./obj
+obj/
+philo
 .editorconfig
 42-philosophers-tester
 philosophers_tester
