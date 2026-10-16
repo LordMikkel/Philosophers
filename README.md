@@ -31,6 +31,10 @@ First the rules, then threads and shared data, then deadlocks, and last how the 
 
 ### 🍴 1. The Rules
 
+<p align="center">
+  <img src=".img/table.svg" alt="Philosophers around a table" />
+</p>
+
 ```bash
 ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [meals]
 ```
@@ -44,10 +48,6 @@ First the rules, then threads and shared data, then deadlocks, and last how the 
 | `meals` *(optional)* | If everyone eats this many times, the dinner ends. |
 
 All arguments must be positive integers, and the times must be at least 60 ms.
-
-<p align="center">
-  <img src=".img/table.svg" alt="Philosophers around a table" />
-</p>
 
 Each line of output has the time in ms since the start, the philosopher's number, and what they did:
 
