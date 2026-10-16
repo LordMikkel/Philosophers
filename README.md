@@ -29,11 +29,11 @@ Each philosopher is a thread (a process in the bonus), and each fork can only be
 
 First the rules, then threads and shared data, then deadlocks, and last how the program notices that someone died.
 
-### 🍴 1. The Rules
-
 <p align="center">
   <img src=".img/table.svg" alt="Philosophers around a table" />
 </p>
+
+### 🍴 1. The Rules
 
 ```bash
 ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [meals]
