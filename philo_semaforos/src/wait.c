@@ -44,6 +44,5 @@ void	end_simulation(t_dinner *dinner)
 	kill_all_philosophers(dinner);
 	sem_wait(dinner->monitor.end);
 	dinner->stop = TRUE;
-	printf("%u	N/A	%s", get_timestamp(dinner->start), DINNER_SUCCES);
-	put_str_fd(STDOUT, DINNER_ENDED);
+	printf("%s%s", DINNER_SUCCES, DINNER_ENDED);
 }

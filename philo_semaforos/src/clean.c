@@ -31,6 +31,8 @@ void	clean_monitor(t_monitor *monitor)
 		sem_close(monitor->death);
 	if (monitor->end != SEM_FAILED)
 		sem_close(monitor->end);
+	if (monitor->waiter != SEM_FAILED)
+		sem_close(monitor->waiter);
 	if (monitor->threads)
 		free(monitor->threads);
 }
@@ -69,4 +71,5 @@ void	unlink_semaphores(void)
 	sem_unlink(SEM_MEALS);
 	sem_unlink(SEM_DEATH);
 	sem_unlink(SEM_END);
+	sem_unlink(SEM_WAITER);
 }

@@ -56,6 +56,7 @@ struct s_monitor
 	sem_t			*meals;
 	sem_t			*death;
 	sem_t			*end;
+	sem_t			*waiter;
 	pthread_t		*threads;
 	t_philo			*philosophers;
 	t_dinner		*dinner;
@@ -99,7 +100,6 @@ void			death(t_philo *philo);
 int				has_eaten_enough(t_philo *philosopher);
 void			take_forks(t_philo *philosopher);
 void			drop_forks(t_philo *philosopher);
-int				all_philosophers_are_satisfied(t_dinner *dinner);
 int				is_philosopher_dead(t_philo *philosopher);
 
 /* ************************************************************************** */
@@ -141,7 +141,6 @@ void			put_str_fd(int fd, char *s);
 int				ft_atoi(const char *nptr);
 bool			ft_atoi_range(const char *nptr);
 void			*ft_calloc(size_t nmemb, size_t size);
-int				ft_isdigit(int c);
 void			safe_print(t_philo *philo, char *message);
 
 /* ************************************************************************** */
@@ -152,6 +151,7 @@ void			safe_print(t_philo *philo, char *message);
 # define SEM_MEALS "/meals"
 # define SEM_DEATH "/death"
 # define SEM_END "/end"
+# define SEM_WAITER "/waiter"
 
 /* ************************************************************************** */
 /*                                Limits                                      */

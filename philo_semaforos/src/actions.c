@@ -14,6 +14,7 @@
 
 void	take_forks(t_philo *philosopher)
 {
+	sem_wait(philosopher->monitor->waiter);
 	sem_wait(philosopher->monitor->forks);
 	safe_print(philosopher, TAKE_FORK);
 	sem_wait(philosopher->monitor->forks);
@@ -39,6 +40,7 @@ void	drop_forks(t_philo *philosopher)
 {
 	sem_post(philosopher->monitor->forks);
 	sem_post(philosopher->monitor->forks);
+	sem_post(philosopher->monitor->waiter);
 }
 
 void	sleeps(t_philo *philosopher)
@@ -52,6 +54,6 @@ void	death(t_philo *philo)
 	sem_wait(philo->monitor->death);
 	sem_wait(philo->monitor->print);
 	printf("%u	%d	%s", get_timestamp(philo->dinner->start), philo->id, DIED);
-	put_str_fd(STDOUT, DINNER_ENDED);
+	printf("%s", DINNER_ENDED);
 	exit(EXIT_FAILURE);
 }

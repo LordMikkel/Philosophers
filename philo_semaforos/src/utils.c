@@ -107,5 +107,11 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 void	thinks(t_philo *philosopher)
 {
+	int	think_time;
+
 	safe_print(philosopher, THINKING);
+	think_time = philosopher->dinner->dead - philosopher->dinner->eat
+		- philosopher->dinner->sleep;
+	if (think_time > 0)
+		msleep(think_time / 2);
 }

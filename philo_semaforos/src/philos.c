@@ -18,10 +18,7 @@ int	philosopher_routine(t_philo *philosopher)
 		monitor_routine, philosopher);
 	pthread_detach(philosopher->monitor->threads[philosopher->id - 1]);
 	if (philosopher->dinner->total == 1)
-	{
 		one_philosopher(philosopher);
-		exit(RIP);
-	}
 	if (philosopher->id % 2 == 0)
 		msleep(philosopher->dinner->eat / 2);
 	while (!safe_read_end(philosopher->dinner))
@@ -42,7 +39,7 @@ void	one_philosopher(t_philo *philosopher)
 	sem_wait(philosopher->monitor->forks);
 	safe_print(philosopher, TAKE_FORK);
 	msleep(philosopher->dinner->dead);
-	sem_post(philosopher->monitor->forks);
+	death(philosopher);
 }
 
 int	has_eaten_enough(t_philo *philosopher)

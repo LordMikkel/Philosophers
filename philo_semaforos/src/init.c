@@ -77,10 +77,10 @@ int	init_monitor(t_monitor *monitor, t_dinner *dinner)
 
 int	init_semaphores(t_monitor *monitor, int total)
 {
-	int	meals;
-
-	meals = monitor->dinner->meals;
 	unlink_semaphores();
+	monitor->waiter = sem_open(SEM_WAITER, O_CREAT | O_EXCL, 0644, total / 2);
+	if (monitor->waiter == SEM_FAILED)
+		return (0);
 	monitor->forks = sem_open(SEM_FORKS, O_CREAT | O_EXCL, 0644, total);
 	if (monitor->forks == SEM_FAILED)
 		return (0);
@@ -93,7 +93,7 @@ int	init_semaphores(t_monitor *monitor, int total)
 	monitor->end = sem_open(SEM_END, O_CREAT | O_EXCL, 0644, 1);
 	if (monitor->end == SEM_FAILED)
 		return (0);
-	if (meals > 0)
+	if (monitor->dinner->meals > 0)
 	{
 		monitor->meals = sem_open(SEM_MEALS, O_CREAT | O_EXCL, 0644, 1);
 		if (monitor->meals == SEM_FAILED)
