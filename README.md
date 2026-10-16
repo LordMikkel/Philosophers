@@ -45,6 +45,10 @@ First the rules, then threads and shared data, then deadlocks, and last how the 
 
 All arguments must be positive integers, and the times must be at least 60 ms.
 
+<p align="center">
+  <img src=".img/table.svg" alt="Philosophers around a table" />
+</p>
+
 Each line of output has the time in ms since the start, the philosopher's number, and what they did:
 
 ```text
