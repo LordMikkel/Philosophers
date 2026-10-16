@@ -14,7 +14,7 @@
 
 void	clean_all(t_dinner *dinner)
 {
-	if (dinner->monitor.forks_available)
+	if (dinner->monitor.forks_available || dinner->monitor.mtx)
 		clean_monitor(&dinner->monitor);
 	if (dinner->philosophers)
 		clean_philosophers(dinner);

@@ -22,11 +22,27 @@ int	start_simulation(t_dinner *dinner)
 	{
 		if (pthread_create(&dinner->philosophers[i].thread, NO_ATRIBUTE,
 				philosopher_routine, &dinner->philosophers[i]))
-			return (put_str_fd(STDERR, ERR_THREAD), 0);
+			return (abort_simulation(dinner, i), 0);
 		i++;
 	}
 	if (pthread_create(&dinner->monitor.thread, NO_ATRIBUTE,
 			monitor_routine, &dinner->monitor))
-		return (put_str_fd(STDERR, ERR_THREAD), 0);
+		return (abort_simulation(dinner, i), 0);
 	return (1);
+}
+
+void	abort_simulation(t_dinner *dinner, int created)
+{
+	int	i;
+
+	put_str_fd(STDERR, ERR_THREAD);
+	pthread_mutex_lock(&dinner->end_mutex);
+	dinner->stop = TRUE;
+	pthread_mutex_unlock(&dinner->end_mutex);
+	i = 0;
+	while (i < created)
+	{
+		pthread_join(dinner->philosophers[i].thread, NO_RETURN_VALUE);
+		i++;
+	}
 }

@@ -22,8 +22,8 @@ void	eats(t_philo *philo)
 	int	left_fork;
 	int	right_fork;
 
-	safe_print(philo, TAKE_L_FORK);
-	safe_print(philo, TAKE_R_FORK);
+	safe_print(philo, TAKE_FORK);
+	safe_print(philo, TAKE_FORK);
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->starvation = get_timestamp(philo->dinner->start);
 	philo->meals++;
@@ -49,9 +49,8 @@ void	death(t_philo *philo)
 	pthread_mutex_lock(&philo->dinner->print_mutex);
 	pthread_mutex_lock(&philo->dinner->end_mutex);
 	philo->dinner->stop = TRUE;
-	printf("%u	%d	%s", get_timestamp(philo->dinner->start), philo->id, DIED);
-	msleep(50);
-	put_str_fd(STDOUT, DINNER_ENDED);
 	pthread_mutex_unlock(&philo->dinner->end_mutex);
+	printf("%u	%d	%s", get_timestamp(philo->dinner->start), philo->id, DIED);
+	printf("%s", DINNER_ENDED);
 	pthread_mutex_unlock(&philo->dinner->print_mutex);
 }

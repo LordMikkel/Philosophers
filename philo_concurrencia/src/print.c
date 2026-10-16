@@ -15,12 +15,10 @@
 void	safe_print(t_philo *philo, char *msg)
 {
 	unsigned int	start_time;
-	int				end;
 
 	start_time = philo->dinner->start;
-	end = safe_read_end(philo->dinner);
 	pthread_mutex_lock(&philo->dinner->print_mutex);
-	if (!end)
+	if (!safe_read_end(philo->dinner))
 		printf("%u	%d	%s", get_timestamp(start_time), philo->id, msg);
 	pthread_mutex_unlock(&philo->dinner->print_mutex);
 }

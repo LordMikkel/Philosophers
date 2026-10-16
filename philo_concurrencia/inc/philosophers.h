@@ -73,12 +73,12 @@ struct s_dinner
 /*                              philosophers                                  */
 /* ************************************************************************** */
 int				start_simulation(t_dinner *dinner);
+void			abort_simulation(t_dinner *dinner, int created);
 void			*philosopher_routine(void *arg);
 void			*monitor_routine(void *arg);
 void			one_philosopher(t_philo *philosopher);
 int				wait_for_threads(t_dinner *dinner);
 int				safe_read_end(t_dinner *dinner);
-int				safe_read_meals(t_philo *philosopher);
 void			end_simulation(t_dinner *dinner);
 
 /* ************************************************************************** */
@@ -113,7 +113,6 @@ int				init_monitor(t_monitor *monitor, t_dinner *dinner);
 unsigned int	get_current_time(void);
 unsigned int	get_timestamp(unsigned int start_time);
 int				msleep(int miliseconds);
-int				calculate_wait_time(t_philo *philosopher);
 
 /* ************************************************************************** */
 /*                                 clean                                      */
@@ -121,7 +120,6 @@ int				calculate_wait_time(t_philo *philosopher);
 void			clean_all(t_dinner *dinner);
 void			clean_dinner(t_dinner *dinner);
 void			clean_philosophers(t_dinner *dinner);
-void			clean_monitor(t_monitor *monitor);
 
 /* ************************************************************************** */
 /*                                 exit                                       */
@@ -135,7 +133,6 @@ void			put_str_fd(int fd, char *s);
 int				ft_atoi(const char *nptr);
 bool			ft_atoi_range(const char *nptr);
 void			*ft_calloc(size_t nmemb, size_t size);
-int				ft_isdigit(int c);
 void			safe_print(t_philo *philo, char *message);
 
 /* ************************************************************************** */
@@ -166,8 +163,6 @@ void			safe_print(t_philo *philo, char *message);
 # define EATING "is eating\n"
 # define THINKING "is thinking\n"
 # define SLEEPING "is sleeping\n"
-# define TAKE_L_FORK "has taken the left fork\n"
-# define TAKE_R_FORK "has taken the rigth fork\n"
 # define TAKE_FORK "has taken a fork\n"
 # define ERR_ARGS "Usage: ./philo philos(n) die(ms) eat(ms) sleep(ms) [meals]\n"
 # define ERR_INT "Error: Arguments must be positive integers (1-2147483647)\n"

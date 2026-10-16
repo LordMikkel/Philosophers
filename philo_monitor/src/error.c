@@ -18,7 +18,7 @@ void	error(char *error, t_dinner *dinner)
 		put_str_fd(STDERR, error);
 	if (!dinner)
 		return ;
-	if (dinner->monitor.forks_available)
+	if (dinner->monitor.forks_available || dinner->monitor.mtx)
 		clean_monitor(&dinner->monitor);
 	if (dinner->philosophers)
 		clean_philosophers(dinner);

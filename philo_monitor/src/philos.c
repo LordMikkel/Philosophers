@@ -39,7 +39,7 @@ void	*philosopher_routine(void *arg)
 
 void	one_philosopher(t_philo *philosopher)
 {
-	safe_print(philosopher, TAKE_L_FORK);
+	safe_print(philosopher, TAKE_FORK);
 	msleep(philosopher->dinner->dead);
 }
 

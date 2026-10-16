@@ -62,6 +62,8 @@ int	is_philosopher_dead(t_philo *philosopher)
 	int	current_time;
 	int	time_since_meal;
 
+	if (has_eaten_enough(philosopher))
+		return (FALSE);
 	current_time = get_timestamp(philosopher->dinner->start);
 	pthread_mutex_lock(&philosopher->meal_mutex);
 	time_since_meal = current_time - philosopher->starvation;
@@ -73,11 +75,10 @@ int	is_philosopher_dead(t_philo *philosopher)
 
 void	end_simulation(t_dinner *dinner)
 {
-	pthread_mutex_lock(&dinner->end_mutex);
 	pthread_mutex_lock(&dinner->print_mutex);
+	pthread_mutex_lock(&dinner->end_mutex);
 	dinner->stop = TRUE;
-	printf("%u	N/A	%s", get_timestamp(dinner->start), DINNER_SUCCES);
-	put_str_fd(STDOUT, DINNER_ENDED);
-	pthread_mutex_unlock(&dinner->print_mutex);
 	pthread_mutex_unlock(&dinner->end_mutex);
+	printf("%s%s", DINNER_SUCCES, DINNER_ENDED);
+	pthread_mutex_unlock(&dinner->print_mutex);
 }

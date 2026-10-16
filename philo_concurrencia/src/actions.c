@@ -79,12 +79,11 @@ void	sleeps(t_philo *philosopher)
 
 void	death(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->dinner->end_mutex);
 	pthread_mutex_lock(&philo->dinner->print_mutex);
+	pthread_mutex_lock(&philo->dinner->end_mutex);
 	philo->dinner->stop = TRUE;
-	printf("%u	%d	%s", get_timestamp(philo->dinner->start), philo->id, DIED);
-	msleep(50);
-	put_str_fd(STDOUT, DINNER_ENDED);
-	pthread_mutex_unlock(&philo->dinner->print_mutex);
 	pthread_mutex_unlock(&philo->dinner->end_mutex);
+	printf("%u	%d	%s", get_timestamp(philo->dinner->start), philo->id, DIED);
+	printf("%s", DINNER_ENDED);
+	pthread_mutex_unlock(&philo->dinner->print_mutex);
 }
