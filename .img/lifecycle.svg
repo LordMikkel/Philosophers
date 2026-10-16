@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="380" viewBox="0 0 680 380" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="680" height="380" rx="16" fill="#ffffff"/>
+  <g font-size="17" text-anchor="middle">
+    <rect x="40" y="30" width="250" height="76" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="165" y="63" font-weight="bold" fill="#92400e">Take 2 forks</text>
+    <text x="165" y="88" font-size="14" fill="#92400e">waits if a neighbor has them</text>
+
+    <rect x="390" y="30" width="250" height="76" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="515" y="63" font-weight="bold" fill="#166534">Eat</text>
+    <text x="515" y="88" font-size="14" fill="#166534">time_to_eat ms · meal counter +1</text>
+
+    <rect x="390" y="190" width="250" height="76" rx="12" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="515" y="223" font-weight="bold" fill="#3730a3">Sleep</text>
+    <text x="515" y="248" font-size="14" fill="#3730a3">drops the forks · time_to_sleep ms</text>
+
+    <rect x="40" y="190" width="250" height="76" rx="12" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+    <text x="165" y="223" font-weight="bold" fill="#334155">Think</text>
+    <text x="165" y="248" font-size="14" fill="#334155">until the forks are free</text>
+  </g>
+  <g stroke="#475569" stroke-width="3" fill="none" marker-end="url(#a)">
+    <line x1="292" y1="68" x2="386" y2="68"/>
+    <line x1="515" y1="108" x2="515" y2="186"/>
+    <line x1="388" y1="228" x2="294" y2="228"/>
+    <line x1="165" y1="188" x2="165" y2="110"/>
+  </g>
+  <text x="340" y="153" text-anchor="middle" font-size="14" fill="#475569">repeat</text>
+  <rect x="40" y="290" width="600" height="56" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="340" y="313" text-anchor="middle" font-size="15" font-weight="bold" fill="#b91c1c">Dies if: time since the START of the last meal ≥ time_to_die</text>
+  <text x="340" y="334" text-anchor="middle" font-size="13" fill="#7f1d1d">The loop ends when someone dies or everyone has eaten [meals] times.</text>
+</svg>

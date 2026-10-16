@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="470" viewBox="0 0 520 470" font-family="Helvetica, Arial, sans-serif">
+<rect width="520" height="470" rx="16" fill="#ffffff"/>
+<circle cx="260" cy="215" r="118" fill="#f3e9d8" stroke="#b08a5a" stroke-width="4"/>
+<circle cx="260" cy="215" r="38" fill="#ffffff" stroke="#b08a5a" stroke-width="2"/>
+<text x="260" y="220" text-anchor="middle" font-size="14" fill="#8a6a40">table</text>
+<g transform="translate(307.0,150.3) rotate(36)" stroke="#d97706" stroke-width="3" stroke-linecap="round" fill="none"><line x1="0" y1="-2" x2="0" y2="20"/><path d="M-7,-18 L-7,-6 Q-7,-1 0,-1 Q7,-1 7,-6 L7,-18"/><line x1="0" y1="-18" x2="0" y2="-2"/></g>
+<g transform="translate(336.1,239.7) rotate(108)" stroke="#d97706" stroke-width="3" stroke-linecap="round" fill="none"><line x1="0" y1="-2" x2="0" y2="20"/><path d="M-7,-18 L-7,-6 Q-7,-1 0,-1 Q7,-1 7,-6 L7,-18"/><line x1="0" y1="-18" x2="0" y2="-2"/></g>
+<g transform="translate(260.0,295.0) rotate(180)" stroke="#d97706" stroke-width="3" stroke-linecap="round" fill="none"><line x1="0" y1="-2" x2="0" y2="20"/><path d="M-7,-18 L-7,-6 Q-7,-1 0,-1 Q7,-1 7,-6 L7,-18"/><line x1="0" y1="-18" x2="0" y2="-2"/></g>
+<g transform="translate(183.9,239.7) rotate(252)" stroke="#d97706" stroke-width="3" stroke-linecap="round" fill="none"><line x1="0" y1="-2" x2="0" y2="20"/><path d="M-7,-18 L-7,-6 Q-7,-1 0,-1 Q7,-1 7,-6 L7,-18"/><line x1="0" y1="-18" x2="0" y2="-2"/></g>
+<g transform="translate(213.0,150.3) rotate(324)" stroke="#d97706" stroke-width="3" stroke-linecap="round" fill="none"><line x1="0" y1="-2" x2="0" y2="20"/><path d="M-7,-18 L-7,-6 Q-7,-1 0,-1 Q7,-1 7,-6 L7,-18"/><line x1="0" y1="-18" x2="0" y2="-2"/></g>
+<circle cx="260.0" cy="47.0" r="30" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+<text x="260.0" y="54.0" text-anchor="middle" font-size="22" font-weight="bold" fill="#ffffff">1</text>
+<circle cx="419.8" cy="163.1" r="30" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+<text x="419.8" y="170.1" text-anchor="middle" font-size="22" font-weight="bold" fill="#ffffff">2</text>
+<circle cx="358.7" cy="350.9" r="30" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+<text x="358.7" y="357.9" text-anchor="middle" font-size="22" font-weight="bold" fill="#ffffff">3</text>
+<circle cx="161.3" cy="350.9" r="30" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+<text x="161.3" y="357.9" text-anchor="middle" font-size="22" font-weight="bold" fill="#ffffff">4</text>
+<circle cx="100.2" cy="163.1" r="30" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+<text x="100.2" y="170.1" text-anchor="middle" font-size="22" font-weight="bold" fill="#ffffff">5</text>
+<text x="260" y="428" text-anchor="middle" font-size="16" fill="#1f2933">5 philosophers, 5 forks.</text>
+<text x="260" y="450" text-anchor="middle" font-size="16" fill="#1f2933">To eat, a philosopher needs the fork on each side.</text>
+</svg>
